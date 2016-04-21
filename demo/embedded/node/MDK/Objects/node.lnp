@@ -1,0 +1,26 @@
+--cpu Cortex-M3
+".\objects\f103_adc_s.o"
+".\objects\f103_pwm.o"
+".\objects\gpio.o"
+".\objects\led.o"
+".\objects\stepmotor.o"
+".\objects\taskmanager.o"
+".\objects\timer.o"
+".\objects\voltage.o"
+".\objects\usart.o"
+".\objects\interrupt.o"
+".\objects\main.o"
+".\objects\misc.o"
+".\objects\stm32f10x_adc.o"
+".\objects\stm32f10x_crc.o"
+".\objects\stm32f10x_dma.o"
+".\objects\stm32f10x_gpio.o"
+".\objects\stm32f10x_rcc.o"
+".\objects\stm32f10x_tim.o"
+".\objects\stm32f10x_usart.o"
+".\objects\startup_stm32f10x_md.o"
+".\objects\system_stm32f10x.o"
+--strict --scatter ".\Objects\node.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\node.map" -o .\Objects\node.axf

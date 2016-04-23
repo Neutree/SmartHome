@@ -461,6 +461,16 @@
               <FileType>8</FileType>
               <FilePath>..\..\lib\src\USART.cpp</FilePath>
             </File>
+            <File>
+              <FileName>Socket_esp8266.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\lib\src\Socket_esp8266.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>esp8266.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\lib\src\esp8266.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -957,6 +967,16 @@
               <FileName>USART.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\lib\src\USART.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Socket_esp8266.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\lib\src\Socket_esp8266.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>esp8266.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\lib\src\esp8266.cpp</FilePath>
             </File>
           </Files>
         </Group>

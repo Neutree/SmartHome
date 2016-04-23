@@ -50,8 +50,8 @@ class Timer{
 	///@param millisecond 毫秒
 	///@param microsecond 微秒
 	////////////////////////////////////////
-		Timer(TIM_TypeDef *timer=TIM1,u8 Prioritygroup=2,u8 preemprionPriority=2,u8 subPriority=2
-			,u16 second=0,u16 millisecond=1,u16 microsecond=0);
+		Timer(TIM_TypeDef *timer=TIM1,u16 second=0,u16 millisecond=1,u16 microsecond=0,
+													u8 Prioritygroup=3,u8 preemprionPriority=2,u8 subPriority=2);
 	
 	////////////////////
 	///开启定时器

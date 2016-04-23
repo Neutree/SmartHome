@@ -24,40 +24,41 @@ void USART3_IRQHandler(void);
 void DMA1_Channel4_IRQHandler(void);
 void DMA1_Channel7_IRQHandler(void);
 void DMA1_Channel2_IRQHandler(void);
-}	
+
+}
 	
 /***************定时器中断函数****************************************/
 
 /*宏定义-----0关----- 1开---------------------------*/
-#define USE_TIM1_IRQ   	1		//使用定时器1
+#define USE_TIM1_IRQ   	0		//使用定时器1
 #define USE_TIM2_IRQ	1
-#define USE_TIM3_IRQ	1	
-#define USE_TIM4_IRQ	1
+#define USE_TIM3_IRQ	0	
+#define USE_TIM4_IRQ	0
 #define USE_CAPTURE   	0	    //是否使用捕获
 #define USE_SERVE    	1		//是否准备自己编写服务函数
 
 /*中断服务函数------------------------------------------*/
 #if USE_TIM1_IRQ	
   #if USE_SERVE
-	void __weak Timer1_IRQ();//定时器1更新中断服务程序，在主函数由用户自己编写类容	
+	void Timer1_IRQ();//定时器1更新中断服务程序，在主函数由用户自己编写类容	
   #endif
 #endif
 
 #if USE_TIM2_IRQ	
   #if USE_SERVE
-	void __weak Timer2_IRQ();
+	void Timer2_IRQ();
   #endif
 #endif
 
 #if USE_TIM3_IRQ	
   #if USE_SERVE
-	void __weak Timer3_IRQ();
+	void Timer3_IRQ();
   #endif
 #endif
 
 #if USE_TIM4_IRQ	
   #if USE_SERVE
-	void __weak Timer4_IRQ();
+	void Timer4_IRQ();
   #endif
 #endif
 
@@ -104,6 +105,8 @@ extern "C"{
 #endif
 
 }
+
+
 
 #endif
 

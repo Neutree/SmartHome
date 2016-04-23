@@ -7,6 +7,7 @@
   */
 
 #include "Interrupt.h"
+#include "hardware.h"
 
 USART *pUSART1 = 0;
 USART *pUSART2 = 0;
@@ -91,7 +92,7 @@ void TIM2_IRQHandler(void)
 		{
 			TIM_ClearITPendingBit(TIM2, TIM_IT_Update);  //清除TIM2更新中断标志 
 			#if USE_SERVE
-			Timer2_IRQ();
+				Timer2_IRQ();
 			#endif
 		}
 	#if USE_CAPTURE

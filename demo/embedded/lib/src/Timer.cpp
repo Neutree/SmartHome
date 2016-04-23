@@ -1,6 +1,7 @@
 #include "Timer.h"
 
-Timer::Timer(TIM_TypeDef *timer,u8 Prioritygroup,u8 preemprionPriority,u8 subPriority,u16 second,u16 millisecond,u16 microsecond)
+Timer::Timer(TIM_TypeDef *timer,u16 second,u16 millisecond,u16 microsecond,
+												u8 Prioritygroup,u8 preemprionPriority,u8 subPriority)
 {
 	//通过计算的出了ARR PSC
 	uint8_t timerIrqChannel;

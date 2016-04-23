@@ -1,31 +1,18 @@
 /**
   *main.cpp
-	*
-	*@author neucrack
-	*@date 2016-04-21
-	*
-	*/
+  *
+  *@author neucrack
+  *@date 2016-04-21
+  *
+  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "hardware.h"
+#include "app.h"
+#include "Interrupt.h"
 
-#include "LED.h"
-#include "GPIO.h"
-#include "F103_ADC_S.h"
-#include "Voltage.h"
-#include "F103_PWM.h"
-#include "StepMotor.h"
+App app;
 
-
-
-//GPIO lightGPIO(GPIOA,0);
-//LED light(lightGPIO,false);
-PWM light(TIM2,true,false,false,false,500);//灯
-ADC adc(1);
-Voltage lightSensor(adc.mAdcPrimordialValue,1);//光强传感器
-GPIO motor_gpioa(GPIOB,6),motor_gpiob(GPIOB,7),motor_gpioc(GPIOB,8),motor_gpiod(GPIOB,9);
-StepMotor stepMotor(motor_gpioa,motor_gpiob,motor_gpioc,motor_gpiod);
-
+void Timer2_IRQ();
 
 // ----------------------------------------------------------------------------
 
@@ -33,26 +20,24 @@ int
 main(int argc, char* argv[])
 {
 
-	//light.Off();
-	light.SetDuty(1,0);
+	app.Init();
 	// Infinite loop
 	while (1)
 	{
-//		lightSensor.Converted();
-////		float result=lightSensor.mConvertedVoltage[0];
-//		int result=0;
-//		result=lightSensor.mConvertedVoltage[0]*100;
-//		//light.On();
-//		light.SetDuty(1,100);
-//		TaskManager::DelayMs(500);
-//		//light.Off();
-//		light.SetDuty(1,0);
-//		TaskManager::DelayMs(500);
-		stepMotor.MotorConfig();
-		TaskManager::DelayMs(3);
+		//光强传感器值，大概范围0~300
+		lightSensor.Converted();
+		app.mLightSensor = lightSensor.mConvertedVoltage[0]*100;
+		
+		//循环 
+		app.loop();
 	}
 }
 
+//定时器2 中断，1ms中断一次，用来放步进电机的中断处理函数
+void Timer2_IRQ()
+{
+	app.TimerInterrupt();
+}
 
 
 // ----------------------------------------------------------------------------

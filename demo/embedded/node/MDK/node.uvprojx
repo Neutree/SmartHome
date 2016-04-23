@@ -468,6 +468,13 @@
         </Group>
         <Group>
           <GroupName>app</GroupName>
+          <Files>
+            <File>
+              <FileName>app.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\app\app.cpp</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>sys</GroupName>
@@ -481,6 +488,11 @@
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\sys\main.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>hardware.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\sys\hardware.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -953,6 +965,13 @@
         </Group>
         <Group>
           <GroupName>app</GroupName>
+          <Files>
+            <File>
+              <FileName>app.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\app\app.cpp</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>sys</GroupName>
@@ -966,6 +985,11 @@
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\sys\main.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>hardware.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\sys\hardware.cpp</FilePath>
             </File>
           </Files>
         </Group>

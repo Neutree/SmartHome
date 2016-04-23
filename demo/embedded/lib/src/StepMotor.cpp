@@ -32,6 +32,8 @@ void StepMotor::SetSpeed(short speed)
  */
 void StepMotor::MotorConfig()
 {
+	if(!mEnable)
+		return ;
 	static char count=0;
 	++mCount;
 	if(mCount>=mSpeed)

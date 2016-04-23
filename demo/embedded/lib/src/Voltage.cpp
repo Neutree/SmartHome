@@ -92,5 +92,6 @@ float Voltage::Converted()
 			
 			default:;
 		}
+			return true;
 }
 

@@ -8,8 +8,8 @@ class Voltage
 {
 	private:
 		/**
-		 *@param  	mPrimordialVoltage     ¼ÇÂ¼Ô­ÉúµçÑ¹ÖµµÄµØÖ·£¬·½±ãÒÔºó¼ÆËã
-		 *@param  	mToltalChannel     		 ¼ÇÂ¼Ò»¹²ÓĞ¶àÉÙ¸öÍ¨µÀ£¬·½±ãÑ­»·
+		 *@param  	mPrimordialVoltage     è®°å½•åŸç”Ÿç”µå‹å€¼çš„åœ°å€ï¼Œæ–¹ä¾¿ä»¥åè®¡ç®—
+		 *@param  	mToltalChannel     		 è®°å½•ä¸€å…±æœ‰å¤šå°‘ä¸ªé€šé“ï¼Œæ–¹ä¾¿å¾ªç¯
 		 */
 			uint16_t* mPrimordialVoltageAddr;
 			uint8_t   mToltalChannel;
@@ -17,19 +17,19 @@ class Voltage
 		
 	
 		/**
-		 *@brief		½«Ô­ÉúÖµ×ª»»³ÉÒ»¸öfloatµÄµçÑ¹Öµ,0~3.3
-		 *@param 		primordialVoltage µçÑ¹µÄÔ­Ê¼Öµ,ĞèÒª12Î»µÄ
+		 *@brief		å°†åŸç”Ÿå€¼è½¬æ¢æˆä¸€ä¸ªfloatçš„ç”µå‹å€¼,0~3.3
+		 *@param 		primordialVoltage ç”µå‹çš„åŸå§‹å€¼,éœ€è¦12ä½çš„
 		 */
-		float 		Converted();
+		void 		Converted();
 	////////////////////////////////////////////////////////////////////////////////
-	///////×î¶à10¸öÖµ¼ÇÂ¼Ô­Ê¼Öµ×ª»»³ÉfloatµÄµçÑ¹Öµ,·¶Î§ÔÚ0~3.3V,µ«ÊÇ±ØĞëÔÚµ÷ÓÃConvertedº¯ÊıÖ®ºó²ÅÄÜ¸üĞÂÖµ
+	///////æœ€å¤š10ä¸ªå€¼è®°å½•åŸå§‹å€¼è½¬æ¢æˆfloatçš„ç”µå‹å€¼,èŒƒå›´åœ¨0~3.3V,ä½†æ˜¯å¿…é¡»åœ¨è°ƒç”¨Convertedå‡½æ•°ä¹‹åæ‰èƒ½æ›´æ–°å€¼
 	///////////////////////////////////////////////////////////////////////////////
 		float 		mConvertedVoltage[10];
 
 		/**
-		 *@brief³õÊ¼»¯µÄÊ±ºò´«ÈëADCÔ­ÉúÖµ
-		 *@param primordialVoltage 	µçÑ¹µÄÔ­Ê¼Öµ,ĞèÒª12Î»µÄ
-		 *@param channelNum					Í¨µÀµÄ×ÜÊı
+		 *@briefåˆå§‹åŒ–çš„æ—¶å€™ä¼ å…¥ADCåŸç”Ÿå€¼
+		 *@param primordialVoltage 	ç”µå‹çš„åŸå§‹å€¼,éœ€è¦12ä½çš„
+		 *@param channelNum					é€šé“çš„æ€»æ•°
 		 */
 		Voltage(uint16_t* primordialVoltage,uint8_t channelNum);
 

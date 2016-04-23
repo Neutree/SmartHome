@@ -8,28 +8,41 @@
 #include "stm32f10x_tim.h"
 #include "stm32f10x_adc.h"
 #include "stm32f10x_dma.h"
-
+/**
+ *
+ *                        ADCç«¯å£ å’Œ STM32f103c8t6æ¿å­çš„å¯¹åº”å¼•è„š
+ *                      ï¼ˆstm32f10xç³»åˆ—æ¿è‹¥æœ‰ä»¥ä¸‹å¼•è„šä¹Ÿå¯å…¼å®¹ä½¿ç”¨ï¼‰
+ *                          PA0---ADC12_IN0   PB0---ADC12_IN8
+ *                          PA1---ADC12_IN1   PB1---ADC12_IN9
+ *                          PA2---ADC12_IN2   PC0---ADC12_IN10
+ *                          PA3---ADC12_IN3   PC1---ADC12_IN11
+ *                          PA4---ADC12_IN4   PC2---ADC12_IN12
+ *                          PA5---ADC12_IN5   PC3---ADC12_IN13
+ *                          PA6---ADC12_IN6   PC4---ADC12_IN14
+ *                          PA7---ADC12_IN7   PC5---ADC12_IN15
+ *
+ */
 
 class ADC
 {
 	public:
 
 	/**
-	 *@brief »ñµÃµç³ØµçÑ¹ÖµµÄº¯Êı
-	 *@param channel	  Ñ¡ÔñÄÄ¸öÍ¨µÀ£»ÀıÈçGetPowerAdc(1);//Ñ¡ÔñµÄÍ¨µÀ1
+	 *@brief è·å¾—ç”µæ± ç”µå‹å€¼çš„å‡½æ•°
+	 *@param channel	  é€‰æ‹©å“ªä¸ªé€šé“ï¼›ä¾‹å¦‚GetPowerAdc(1);//é€‰æ‹©çš„é€šé“1
 	 */
 		void InitAdcDma(uint8_t* channelArr);
 	
 	/**
-	 *@brief ´ÓDMA»ñµÃµÄADCÔ­Ê¼ÖµÖµ´æ·ÅµÄÊı×é
+	 *@brief ä»DMAè·å¾—çš„ADCåŸå§‹å€¼å€¼å­˜æ”¾çš„æ•°ç»„
 	 */
 	
-		uint16_t  mAdcPrimordialValue[10];//ÏÈ´æ´¢10¸öÍ¨µÀµÄÖµ£¬ºóÃæÔÙÔö¼Ó
+		uint16_t  mAdcPrimordialValue[10];//å…ˆå­˜å‚¨10ä¸ªé€šé“çš„å€¼ï¼Œåé¢å†å¢åŠ 
 	
 	/**
-	 *@brief ¹¹Ôìº¯Êı
-	 *@param channelv*	  Ñ¡ÔñÄÄ¸öÍ¨µÀ£»ÀıÈçADC adc(0);//³õÊ¼»¯Í¨µÀ0
-	 *																		 ADC adc2(1,4,7,9)//³õÊ¼»¯Í¨µÀ1,4,7,9
+	 *@brief æ„é€ å‡½æ•°
+	 *@param channelv*	  é€‰æ‹©å“ªä¸ªé€šé“ï¼›ä¾‹å¦‚ADC adc(0);//åˆå§‹åŒ–é€šé“0
+	 *																		 ADC adc2(1,4,7,9)//åˆå§‹åŒ–é€šé“1,4,7,9
 	 */
 		ADC(uint8_t channelv0=255,
 				uint8_t channelv1=255,
@@ -43,7 +56,7 @@ class ADC
 				uint8_t channelv9=255)
 			{
 				
-			/*³õÊ¼»¯³ÉÔ±±äÁ¿ÇøÓò*/
+			/*åˆå§‹åŒ–æˆå‘˜å˜é‡åŒºåŸŸ*/
 				
 				maxAdcChannel = 10;
 				mGpio					= mGpioArr;
@@ -66,18 +79,18 @@ class ADC
 
 	private:
 
-		uint8_t						 maxAdcChannel;		//×î¶àµÄÍ¨µÀÊı
-		GPIO_TypeDef**	 	 mGpio;						//´æ´¢GPIO×éÊı×é
-		uint16_t* 				 mPin;						//´æ´¢GPIO×éÏàÓ¦µÄPinÊı×é
-		u8*								 mAdcChannel;			//´æ´¢ĞèÒª³õÊ¼»¯µÄÍ¨µÀ£¬ÒÔ255±êÖ¾½áÊø£»
-		u8 								 mAdcTotal;				//´æ´¢Ò»¹²ÓĞ¶àÉÙ¸öÓĞĞ§Í¨µÀ
+		uint8_t						 maxAdcChannel;		//æœ€å¤šçš„é€šé“æ•°
+		GPIO_TypeDef**	 	 mGpio;						//å­˜å‚¨GPIOç»„æ•°ç»„
+		uint16_t* 				 mPin;						//å­˜å‚¨GPIOç»„ç›¸åº”çš„Pinæ•°ç»„
+		u8*								 mAdcChannel;			//å­˜å‚¨éœ€è¦åˆå§‹åŒ–çš„é€šé“ï¼Œä»¥255æ ‡å¿—ç»“æŸï¼›
+		u8 								 mAdcTotal;				//å­˜å‚¨ä¸€å…±æœ‰å¤šå°‘ä¸ªæœ‰æ•ˆé€šé“
 	
 		GPIO_TypeDef* 		 mGpioArr[10];
 		uint16_t					 mPinArr[10];
 		uint8_t						 mAdcChannelArr[10];
 	/**
-	 *@brief ½«Ñ¡ÔñµÄÍ¨µÀ¶ÔÓ¦µ½ÕæÊµµÄGPIOºÍADCÍ¨µÀ
-	 *@param channelv*	  Ñ¡ÔñÄÄ¸öÍ¨µÀ,·¶Î§ÔÚ0~9£»ÀıÈç		ChannelToGpio(1,3,4)
+	 *@brief å°†é€‰æ‹©çš„é€šé“å¯¹åº”åˆ°çœŸå®çš„GPIOå’ŒADCé€šé“
+	 *@param channelv*	  é€‰æ‹©å“ªä¸ªé€šé“,èŒƒå›´åœ¨0~9ï¼›ä¾‹å¦‚		ChannelToGpio(1,3,4)
 	 */	
 		void ChannelToGpio(					 uint8_t channelv0=255,
 																 uint8_t channelv1=255,
@@ -88,7 +101,7 @@ class ADC
 																 uint8_t channelv6=255,
 																 uint8_t channelv7=255,
 																 uint8_t channelv8=255,
-																 uint8_t channelv9=255);						//½«Í¨µÀºÅ¶ÔÓ¦µ½GPIO
+																 uint8_t channelv9=255);						//å°†é€šé“å·å¯¹åº”åˆ°GPIO
 };
 
 #endif

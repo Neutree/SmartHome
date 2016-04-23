@@ -3,8 +3,8 @@
 
 
 /**
- *@brief³õÊ¼»¯µÄÊ±ºò´«ÈëADCÔ­ÉúÖµ
- *@param primordialVoltage µçÑ¹µÄÔ­Ê¼Öµ,ĞèÒª12Î»µÄ
+ *@briefåˆå§‹åŒ–çš„æ—¶å€™ä¼ å…¥ADCåŸç”Ÿå€¼
+ *@param primordialVoltage ç”µå‹çš„åŸå§‹å€¼,éœ€è¦12ä½çš„
  */
  
 Voltage::Voltage(uint16_t* primordialVoltage,uint8_t channelNum)
@@ -24,17 +24,17 @@ Voltage::Voltage(uint16_t* primordialVoltage,uint8_t channelNum)
 }
 
 /**
- *@brief		½«Ô­ÉúÖµ×ª»»³ÉÒ»¸öfloatµÄµçÑ¹Öµ,0~3.3
- *@param 		primordialVoltage µçÑ¹µÄÔ­Ê¼Öµ,ĞèÒª12Î»µÄ
+ *@brief		å°†åŸç”Ÿå€¼è½¬æ¢æˆä¸€ä¸ªfloatçš„ç”µå‹å€¼,0~3.3
+ *@param 		primordialVoltage ç”µå‹çš„åŸå§‹å€¼,éœ€è¦12ä½çš„
  */
 
-float Voltage::Converted()
+void Voltage::Converted()
 {
 	uint8_t i = 0;
 	uint32_t tempPri[10] = {0};
 	
 	///////////////////////////////////////////////
-	//////////½øĞĞÀÛ¼Ó¼ÆËã
+	//////////è¿›è¡Œç´¯åŠ è®¡ç®—
 	///////////////////////////////////////////////
 	for(;i<50;i++)
 	{
@@ -56,7 +56,7 @@ float Voltage::Converted()
 	}
 	
 	///////////////////////////////////////////////
-	//////////È¡Æ½¾ùÖµ
+	//////////å–å¹³å‡å€¼
 	///////////////////////////////////////////////
 		switch(mToltalChannel)
 		{
@@ -74,7 +74,7 @@ float Voltage::Converted()
 			default:;
 		}
 	///////////////////////////////////////////////
-	//////////»»Ëã³ÉµçÑ¹Öµ£¬·¶Î§ÔÚ0~3.3Ö®¼ädµÄfloat
+	//////////æ¢ç®—æˆç”µå‹å€¼ï¼ŒèŒƒå›´åœ¨0~3.3ä¹‹é—´dçš„float
 	///////////////////////////////////////////////
 		
 		switch(mToltalChannel)
@@ -92,6 +92,5 @@ float Voltage::Converted()
 			
 			default:;
 		}
-			return true;
 }
 

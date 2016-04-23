@@ -21,9 +21,30 @@ void StepMotor::Disable()
 {
 	mEnable = false;
 }
+
+bool StepMotor::IsEnable()
+{
+	return mEnable;
+}
+
 void StepMotor::SetSpeed(short speed)
 {
 	mSpeed = speed;
+}
+
+short StepMotor::GetSpeed()
+{
+	return mSpeed;
+}
+
+void StepMotor::SetDirection(bool isClockwise)
+{
+	mIsDirectionClockwise = isClockwise;
+}
+
+bool StepMotor::GetDirection()
+{
+	return mIsDirectionClockwise;
 }
 
 /**
@@ -43,10 +64,19 @@ void StepMotor::MotorConfig()
 		mGPIOb.SetLevel((mCode[count]&0x04)>>2);
 		mGPIOc.SetLevel((mCode[count]&0x02)>>1);
 		mGPIOd.SetLevel(mCode[count]&0x01);
-		++count;
-		if(count>=8)
+		if(mIsDirectionClockwise)
+		{
+			if(count<=0)
+				count = 8;
+			--count;
+			return ;
+		}
+		if(count>=7)
+		{
 			count = 0;
-		
+			return ;
+		}
+		++count;
 	}
 }
 

@@ -19,8 +19,14 @@ SmartHome
 
 
 # 开发环境
-* 底层：MDK 5.17.0.0
-* 服务器：eclipse
-* 移动客户端：Android Studio
+* 底层
+  * IDE:MDK 5.17.0.0 
+  * 语言： C++ 、C
+* 服务器
+  * IDE：eclipse
+  * 语言：java
+* 移动客户端
+  * IDE：Android Studio
+  * 语言：java
  
 

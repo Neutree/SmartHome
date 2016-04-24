@@ -8,7 +8,7 @@ class Socket_esp8266 :esp8266,Socket
 {
 public:
 	Socket_esp8266(USART& usart);
-	bool Init();
+	virtual bool Init();
 	virtual bool Connect(char* ipAddr,short port,Socket_Type socketType,Socket_Protocol socketProtocol=Socket_Protocol_IPV4);
 	virtual bool Write(char* data,unsigned int num);
 	virtual unsigned int Read(char* data);

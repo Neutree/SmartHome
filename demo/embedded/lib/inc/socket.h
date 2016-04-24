@@ -9,6 +9,7 @@ class Socket
 {
 public :
 	Socket(){}
+	virtual bool Init() = 0;
 	virtual bool Connect(char* ipAddr,short int port,Socket_Type socketType,Socket_Protocol socketProtocol=Socket_Protocol_IPV4) = 0;
 	virtual bool Write(char* data,unsigned int num) = 0;
 	virtual unsigned int Read(char* data) = 0;

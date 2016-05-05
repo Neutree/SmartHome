@@ -15,6 +15,10 @@ public:
 	void loop();
 private:
 	
+	char mApSetName[15];
+	char mApSetPasswd[18];
+	char mApJoinName[15];
+	char mApJoinPasswd[18];
 };
 
 

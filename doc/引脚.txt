@@ -1,4 +1,4 @@
-PA0£ºLED
+PA6/TIM3_CH1£ºLED
 PA1/TIM2_CH2£ºLight_Sensor
 PB6789:Step Motor
 PA2:TX2  -->WIFI RX

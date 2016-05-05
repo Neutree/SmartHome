@@ -2,9 +2,11 @@
 #define __SOCKET_ESP8266_H
 #include "socket.h"
 #include "esp8266.h"
+#include "string.h"
+#include "stdlib.h"
 #include "USART.h"
 
-class Socket_esp8266 :esp8266,Socket
+class Socket_esp8266 :public esp8266,public Socket
 {
 public:
 	Socket_esp8266(USART& usart);
@@ -12,15 +14,17 @@ public:
 	virtual bool Connect(char* ipAddr,short port,Socket_Type socketType,Socket_Protocol socketProtocol=Socket_Protocol_IPV4);
 	virtual bool Write(char* data,unsigned int num);
 	virtual unsigned int Read(char* data);
+	virtual unsigned int Read(char* data,unsigned int num);
 	virtual bool IsAlive();
 	virtual bool Close();
+	virtual void SetTimeOut(float timetOut);
+
+	bool SetMUX(bool isEnableMUX);
 private:
 	USART& mUsart;
-	char mApSetName[15];
-	char mApSetPasswd[18];
-	char mApJoinName[15];
-	char mApJoinPasswd[18];
-
+	float mTimeOut;
+	bool mIsConnected;
+	bool mIsEnableMUX;
 };
 
 #endif

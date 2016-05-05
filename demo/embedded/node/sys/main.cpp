@@ -19,7 +19,6 @@ void Timer2_IRQ();
 int
 main(int argc, char* argv[])
 {
-
 	app.Init();
 	// Infinite loop
 	while (1)

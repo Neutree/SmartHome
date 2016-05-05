@@ -484,6 +484,11 @@
               <FileType>8</FileType>
               <FilePath>..\app\app.cpp</FilePath>
             </File>
+            <File>
+              <FileName>protocol.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\app\protocol.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -990,6 +995,11 @@
               <FileName>app.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\app\app.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>protocol.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\app\protocol.cpp</FilePath>
             </File>
           </Files>
         </Group>

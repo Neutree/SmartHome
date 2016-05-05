@@ -9,6 +9,7 @@
 #include "StepMotor.h"
 #include "USART.h"
 #include "Timer.h"
+#include "Socket_esp8266.h"
 
 extern PWM light;//灯
 
@@ -21,6 +22,9 @@ extern Timer timer;//定时器2,1ms中断一次
 
 extern ADC adc;
 extern Voltage lightSensor;//光强传感器
+
+extern USART com2;
+extern Socket_esp8266 wifi;//wifi
 
 
 #endif

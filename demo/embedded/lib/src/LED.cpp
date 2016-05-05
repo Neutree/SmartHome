@@ -12,6 +12,7 @@ LED::LED(GPIO &gpio,bool highLevelOn)
 		mLevelOn=1;
 	else
 		mLevelOn=0;
+	Off();
 }
 
 

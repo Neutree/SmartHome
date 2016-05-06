@@ -4,6 +4,8 @@
 class Protocol
 {
 public:
+	enum OperationType{OperationType_Control=1,OperationType_Ack=2,OperationType_Ask=3};
+
 	struct ToServer
 	{
 		short head;
@@ -17,12 +19,14 @@ public:
 	};
 	struct Switch
 	{
+		static short dataType;
 		char status;
 		short commentLength;
 		char* comment;
 	};
 	struct Sensor
 	{
+		static short dataType;
 		long int name;
 		char datalength;
 		char* data;
@@ -31,6 +35,7 @@ public:
 	};
 	struct Door
 	{
+		static short dataType;
 		char userName[11];
 		char passwd[16];
 		short commentLength;
@@ -38,6 +43,7 @@ public:
 	};
 	struct SignIn
 	{
+		static short dataType;
 		char userName[11];
 		char passwd[16];
 		char type;
@@ -48,8 +54,9 @@ public:
 		char nickName[10];
 		char passwd[4];
 	};
-*/	struct HeartBeat
+*/	struct KeepAlive
 	{
+		static short dataType;
 		char type;
 	};
 	

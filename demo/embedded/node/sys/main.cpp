@@ -19,6 +19,7 @@ int
 main(int argc, char* argv[])
 {
 	app.Init();
+	timer.Start();
 	// Infinite loop
 	while (1)
 	{

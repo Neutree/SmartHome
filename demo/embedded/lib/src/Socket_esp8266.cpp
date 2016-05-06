@@ -77,7 +77,7 @@ unsigned int Socket_esp8266::Read(char* data)
 		{
 			mUsart.GetReceivedData((unsigned char*)(data+count),1);
 			++count;
-			if(count==dataLength || count==ESP8266_RECEIVE_BUFFER_SIZE || count==sizeof(data))
+			if(count==dataLength || count==ESP8266_RECEIVE_BUFFER_SIZE)
 				break;
 		}
 	}

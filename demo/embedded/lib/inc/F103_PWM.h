@@ -34,7 +34,7 @@ class PWM{
 				 *@param frequency 期望频率
 				 *@param remap 引脚是否映射,这个版本还没有做
 				 */
-				PWM(TIM_TypeDef* timer,bool enCh1=0,bool enCh2=0,bool enCh3=0,bool enCh4=0,u16 frequency=500,bool remap = false)
+				PWM(TIM_TypeDef* timer,bool enCh1=false,bool enCh2=false,bool enCh3=false,bool enCh4=false,u16 frequency=500,bool remap = false)
 				{
 						mPsc = 0;
 						mArr = 0;

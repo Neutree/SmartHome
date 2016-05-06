@@ -51,8 +51,8 @@ void App::loop()
 
 	
 	//连接状态检查
-	if(!CheckConnectionToServer())
-		com1<<"connection to server error!\n";
+//	if(!CheckConnectionToServer())
+//		com1<<"connection to server error!\n";
 	
 	
 	//接收来自服务器的数据
@@ -124,7 +124,7 @@ bool App::SignIn()
 //硬件健康状态检查
 bool App::CheckHardware()
 {
-	return wifi.Kick();
+	return true;//wifi.Kick();
 }
 
 
@@ -146,12 +146,11 @@ void App::ReceiveAndDeal()
 	static unsigned short size=0;
 	if(com2.ReceiveBufferSize()>5)
 	{
-		com1<<"\n\n\nreceived data \n\n\n\n\n\n";
 		size = wifi.Read(mDataTemp);
 		if(size>0)
 		{
 			void* data;
-			Protocol::OperationType operationType;
+			static Protocol::OperationType operationType;
 			short dataType = Decode(&data,&operationType);
 			if(dataType == Protocol::Switch::dataType)
 			{
@@ -170,7 +169,7 @@ void App::ReceiveAndDeal()
 							mLightOn = true;
 						}
 					}
-					else if(*((Protocol::Switch*)data)->comment == 2)//门锁
+					else if(*((Protocol::Switch*)data)->comment == 2)//窗帘
 					{
 						//窗帘开关
 						if(((Protocol::Switch*)data)->status==0)
@@ -249,7 +248,8 @@ short App::Decode(void* *data,Protocol::OperationType* operationType)
 	mToServer.dataLength = (short)mDataTemp[17]<<8|mDataTemp[18];
 	//CRC校验
 	short parity = CRC16Calculate((const uint8_t*)mDataTemp,19+mToServer.dataLength);
-	if(parity != ( (short)mDataTemp[19+mToServer.dataLength]<<8|mDataTemp[20+mToServer.dataLength]))
+	short parity2 = ( (short)mDataTemp[19+mToServer.dataLength]<<8|mDataTemp[20+mToServer.dataLength]);
+	if(parity != parity2)
 		return 0;
 	//校验成功，数据分解
 	mToServer.operationType = mDataTemp[4];
@@ -264,7 +264,7 @@ short App::Decode(void* *data,Protocol::OperationType* operationType)
 		*data = &mSwitch;
 		mSwitch.status = mToServer.data[0];
 		mSwitch.commentLength = (short)mToServer.data[1]<<8|mToServer.data[2];
-		memcpy(mSwitch.comment,mToServer.data+3,((Protocol::Switch*)data)->commentLength);
+		memcpy(mSwitch.comment,mToServer.data+3,mSwitch.commentLength);
 	}
 	else if(mToServer.dataType == Protocol::Sensor::dataType)
 	{
@@ -371,11 +371,11 @@ bool App::SendKeepAliveToServer()
 bool App::Write(Protocol::ToServer &toServer)
 {
 	LittleEndianToBigEndian(mDataTemp,toServer.head);//起始标志
-	LittleEndianToBigEndian(mDataTemp+2,toServer.dataType);//起始标志
-	mDataTemp[4]=toServer.operationType;//起始标志
+	LittleEndianToBigEndian(mDataTemp+2,toServer.dataType);//数据类型
+	mDataTemp[4]=toServer.operationType;//操作类型
 	memcpy(mDataTemp+5,toServer.deviceNumber,6);
 	memcpy(mDataTemp+11,toServer.UTC,6);
-	LittleEndianToBigEndian(mDataTemp+17,toServer.dataLength);//起始标志
+	LittleEndianToBigEndian(mDataTemp+17,toServer.dataLength);//数据长度
 	memcpy(mDataTemp+19,toServer.data,toServer.dataLength);
 	toServer.crc16 = CRC16Calculate((const uint8_t*)mDataTemp,19+toServer.dataLength);
 	LittleEndianToBigEndian(mDataTemp+19+toServer.dataLength,toServer.crc16);

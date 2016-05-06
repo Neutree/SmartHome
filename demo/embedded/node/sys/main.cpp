@@ -9,8 +9,6 @@
 #include "hardware.h"
 #include "app.h"
 #include "Interrupt.h"
-#include "stdlib.h"
-#include "CRC.h"
 App app;
 
 void Timer2_IRQ();
@@ -29,13 +27,7 @@ main(int argc, char* argv[])
 		app.mLightSensor = lightSensor.mConvertedVoltage[0]*100;
 		
 		//循环 
-		//app.loop();
-		char a[]="123456789";
-		short b=0,c=0;
-		b = CRC16Calculate((const uint8_t*)a,9);
-		c = CRC16Calculate((const uint8_t*)a,9);
-		com1<<(int)(b>>8&0x00ff)<<"\t"<<(b&0x00ff)<<"\t\t"<<(int)(c>>8&0x00ff)<<"\t"<<(c&0x00ff)<<"\n";
-		TaskManager::DelayS(3);
+		app.loop();
 	}
 }
 

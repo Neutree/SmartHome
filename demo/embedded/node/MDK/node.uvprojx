@@ -475,6 +475,13 @@
         </Group>
         <Group>
           <GroupName>lib/math</GroupName>
+          <Files>
+            <File>
+              <FileName>MD5.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\lib\src\MD5.cpp</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>app</GroupName>
@@ -987,6 +994,13 @@
         </Group>
         <Group>
           <GroupName>lib/math</GroupName>
+          <Files>
+            <File>
+              <FileName>MD5.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\lib\src\MD5.cpp</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>app</GroupName>

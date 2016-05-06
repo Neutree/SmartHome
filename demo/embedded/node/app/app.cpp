@@ -7,6 +7,10 @@ App::App()
 mApJoinName("ICanHearYou"),mApJoinPasswd("1208077207"),
 mUserName("15023490062"),mUserPasswd("1208077207")
 {
+	mSensorName[0]=0;
+	mSensorName[1]=0;
+	mSensorName[2]=0;
+	mSensorName[3]=1;
 	mToServer.head=0xabac;
 	memcpy(mToServer.deviceNumber,mDeviceNumber,6);
 	mToServer.data=mToServerData;
@@ -29,7 +33,7 @@ void App::TimerInterrupt()
 void App::Init()
 {
 	//关闭LED
-	light.SetDuty(1,5,true);
+	light.Off();
 	//步进电机使能
 	stepMotor.Disable();
 	//设置步进电机速度，值越小速度越大
@@ -37,6 +41,7 @@ void App::Init()
 	//初始化wifi
 	WifiInit();
 	
+	TaskManager::DelayS(5);
 	if(!SignIn())
 		com1<<"sign in fail!!!!!!!!!!!!\n\n\n";
 	
@@ -57,7 +62,6 @@ void App::loop()
 	
 	//接收来自服务器的数据
 	ReceiveAndDeal();
-	
 }
 
 void App::WifiInit()
@@ -66,9 +70,7 @@ void App::WifiInit()
 	if(!wifi.Kick())//检查连接
 	{
 		com1<<"no wifi!\n\n\n";
-		light.SetDuty(1,20,true);
-		TaskManager::DelayMs(500);
-		light.SetDuty(1,5,true);
+		light.Blink(3,300);
 		return;
 	}
 	else
@@ -82,18 +84,12 @@ void App::WifiInit()
 	if(!wifi.Connect((char*)"192.168.191.1",8090,Socket_Type_Stream,Socket_Protocol_IPV4))
 	{
 		com1<<"connect server fail!\n\n\n";
-		for(char i=0;i<2;++i)
-		{
-			light.SetDuty(1,20,true);
-			TaskManager::DelayMs(500);
-			light.SetDuty(1,0,true);
-			TaskManager::DelayMs(500);
-		}
-		light.SetDuty(1,5,true);
+		light.Blink(4,300);
 		return;
 	}
 	com1<<"WIFI initialize complete!\n";
-	light.SetDuty(1,0,true);
+	light.Blink(2,200);
+	light.Off();
 }
 
 
@@ -160,12 +156,12 @@ void App::ReceiveAndDeal()
 					{
 						if(((Protocol::Switch*)data)->status==0)
 						{
-							light.SetDuty(1,0,true);
+							light.Off();
 							mLightOn = false;
 						}
 						else if(((Protocol::Switch*)data)->status==1)
 						{
-							light.SetDuty(1,100,true);
+							light.On();
 							mLightOn = true;
 						}
 					}
@@ -193,7 +189,7 @@ void App::ReceiveAndDeal()
 					{
 						SendLightInfoToServer();
 					}
-					else if(*((Protocol::Switch*)data)->comment == 2)//门锁
+					else if(*((Protocol::Switch*)data)->comment == 2)//窗帘
 					{
 						SendCurtainInfoToServer();
 					}
@@ -336,7 +332,7 @@ bool App::SendSensorInfoToServer()
 	mToServer.operationType = Protocol::OperationType_Ack;
 	mToServer.dataType = Protocol::Sensor::dataType;
 	mToServer.dataLength = 8;
-	memcpy(mToServer.data,"S_A",4);
+	memcpy(mToServer.data,mSensorName,4);
 	mToServer.data[4] = 1;
 	mToServer.data[5] = mLightSensor;
 	mToServer.data[6]=0;

@@ -11,7 +11,9 @@
 #include "Timer.h"
 #include "Socket_esp8266.h"
 
-extern PWM light;//灯
+//light
+extern GPIO ledGpio;
+extern LED light;
 
 
 //GPIO motor_gpioa,motor_gpiob(GPIOB,7),motor_gpioc(GPIOB,8),motor_gpiod(GPIOB,9);

@@ -1,7 +1,6 @@
 #include "hardware.h"
 
-//light
-PWM light(TIM3,true,false,false,false,500);//灯
+
 
 
 //step motor
@@ -9,6 +8,9 @@ GPIO motor_gpioa(GPIOB,6),motor_gpiob(GPIOB,7),motor_gpioc(GPIOB,8),motor_gpiod(
 StepMotor stepMotor(motor_gpioa,motor_gpiob,motor_gpioc,motor_gpiod);
 Timer timer(TIM2,0,1,0);//定时器2,1ms中断一次
 
+//light
+GPIO ledGpio(GPIOA,0);
+LED light(ledGpio,false);//灯
 
 
 //usart

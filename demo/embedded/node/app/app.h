@@ -59,6 +59,8 @@ private:
 	char mApJoinName[15];
 	char mApJoinPasswd[18];
 
+	char mSensorName[4];
+
 	char mUserName[12];
 	char mUserPasswd[16];
 

@@ -481,6 +481,11 @@
               <FileType>8</FileType>
               <FilePath>..\..\lib\src\MD5.cpp</FilePath>
             </File>
+            <File>
+              <FileName>CRC.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\lib\src\CRC.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -999,6 +1004,11 @@
               <FileName>MD5.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\lib\src\MD5.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>CRC.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\..\lib\src\CRC.cpp</FilePath>
             </File>
           </Files>
         </Group>

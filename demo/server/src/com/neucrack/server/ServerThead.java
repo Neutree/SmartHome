@@ -2,6 +2,7 @@ package com.neucrack.server;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,10 +22,9 @@ import com.neucrack.tool.Date_TimeStamp;
 public class ServerThead extends Thread {
 
 	protected Socket socket = null;
-	protected OutputStream os = null;
-	protected PrintWriter pw = null;
 	protected String recvData = null;
 	protected DataInputStream mInStream=null;
+	protected DataOutputStream mOutStream=null;
 	
 	public byte mUserName[]= new byte[11];
 	public byte[] mDeviceNumber=new byte[6];
@@ -102,13 +102,12 @@ public class ServerThead extends Thread {
 		
 		// 获取输出流,响应客户端请求
 		try {
-			os = socket.getOutputStream();
+			mOutStream = new DataOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
-		pw = new PrintWriter(os);
 		return true;
 	}
 	//等待设备登录
@@ -172,10 +171,8 @@ public class ServerThead extends Thread {
 
 	protected void close() {
 		try {
-			if (pw != null)
-				pw.close();
-			if (os != null)
-				os.close();
+			if(mOutStream!=null)
+				mOutStream.close();
 			if(mInStream!=null)
 				mInStream.close();
 			if (socket != null)

@@ -136,7 +136,43 @@ public class ToDevices {
 	}
 	
 	public boolean GetLightStatus(String device,Light light){
-		return false;
+		byte[] data = new byte[50];
+		byte[] deviceNumber = MacToBytes(device);
+		data[0] = (byte) 0xab;
+		data[1] = (byte) 0xac;
+		data[2] = (byte) 0x00;
+		data[3] = (byte) 0x01;
+		data[4] = (byte) 0x03;//询问
+		System.arraycopy(deviceNumber, 0, data, 5, 6);
+		data[17] = (byte) 0x00;
+		data[18] = (byte) 0x04;
+		data[19] = (byte) 0;
+		data[20] = (byte) 0x00;
+		data[21] = (byte) 0x01;
+		data[22] = (byte) 0x01;
+		long crc16 = CRC.CRC16Calculate(data, 23);
+		data[23] = (byte) (crc16>>8&0xff);
+		data[24] = (byte) (crc16&0xff);
+		try {
+			mOutStream.write(data, 0, 25);;
+			int size = mInStream.read(data);
+			if(size>0){
+				if(!VerifyFrame(data))
+					return false;
+				//校验成功
+				if(data[4]!=2 || data[22] != 0x01)//不是是响应信息或者不是灯光信息
+					return false;
+				if(data[19]==1)//灯光状态
+					light.isOn = true;
+				else
+					light.isOn = false;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	public boolean GetCurtainStatus(String device,Curtain curtain){
 		return false;

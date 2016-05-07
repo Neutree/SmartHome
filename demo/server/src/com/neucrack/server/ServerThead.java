@@ -110,6 +110,11 @@ public class ServerThead extends Thread {
 				else
 					System.out.println("控制成功");
 				flag=!flag;
+				Light light = new Light();
+				if(!mToDevices.GetLightStatus(mSignInfo.device,light))
+					System.out.println("查询灯光状态失败");
+				else
+					System.out.println("查询成功，状态："+(light.isOn?"开":"关"));
 			}
 		}
 	}

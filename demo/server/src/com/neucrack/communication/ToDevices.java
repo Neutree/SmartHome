@@ -89,7 +89,41 @@ public class ToDevices {
 		return true;
 	}
 	public boolean LightControl(String device,boolean isOn){
-		return isOn;
+		byte[] data = new byte[50];
+		byte[] deviceNumber = MacToBytes(device);
+		data[0] = (byte) 0xab;
+		data[1] = (byte) 0xac;
+		data[2] = (byte) 0x00;
+		data[3] = (byte) 0x01;
+		data[4] = (byte) 0x01;
+		System.arraycopy(deviceNumber, 0, data, 5, 6);
+		data[17] = (byte) 0x00;
+		data[18] = (byte) 0x04;
+		data[19] = (byte)(isOn?1:0);
+		data[20] = (byte) 0x00;
+		data[21] = (byte) 0x01;
+		data[22] = (byte) 0x01;
+		long crc16 = CRC.CRC16Calculate(data, 23);
+		data[23] = (byte) (crc16>>8&0xff);
+		data[24] = (byte) (crc16&0xff);
+		try {
+			mOutStream.write(data, 0, 25);;
+			int size = mInStream.read(data);
+			if(size>0){
+				if(!VerifyFrame(data))
+					return false;
+				//校验成功
+				if(data[4]!=2 || data[22] != 0x01)//不是是响应信息或者不是灯光信息
+					return false;
+				if(data[19]!=(isOn?1:0))//比较是否控制成功
+					return false;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	public boolean CurtainControl(String device,boolean isOn){
 		return isOn;

@@ -50,6 +50,12 @@ void App::Init()
 
 void App::loop()
 {
+	static float time;
+	if(TaskManager::Time()-time>=20)
+	{
+		time = TaskManager::Time();
+		com1<<".";
+	}
 	//硬件健康状态检查
 	if(!CheckHardware())
 		com1<<"haredware error!\n";
@@ -127,7 +133,7 @@ bool App::CheckHardware()
 //连接状态检查
 bool App::CheckConnectionToServer()
 {
-	if(TaskManager::Time()-mTimeReceivedKeepAlive>6)//超时，没有收到来自服务器的保持包
+	if(TaskManager::Time()-mTimeReceivedKeepAlive>320)//超时（5分钟），没有收到来自服务器的保持包
 	{
 		mIsAlive = false;
 		return false;
@@ -164,6 +170,7 @@ void App::ReceiveAndDeal()
 							light.On();
 							mLightOn = true;
 						}
+						SendLightInfoToServer();
 					}
 					else if(*((Protocol::Switch*)data)->comment == 2)//窗帘
 					{
@@ -176,6 +183,7 @@ void App::ReceiveAndDeal()
 						{
 							OpenCurtain();
 						}
+						SendCurtainInfoToServer();
 					}
 					else if(*((Protocol::Switch*)data)->comment == 3)//门锁
 					{

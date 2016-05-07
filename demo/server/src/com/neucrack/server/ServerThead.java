@@ -52,6 +52,8 @@ public class ServerThead extends Thread {
 		}
 		
 		long keepAliveTime = Date_TimeStamp.timeStamp();
+		long time2=Date_TimeStamp.timeStamp();
+		boolean flag=false;
 		while(true){
 			
 			//登录检测
@@ -101,7 +103,14 @@ public class ServerThead extends Thread {
 				System.out.println("链路保持成功！");
 			}
 			
-			
+			if(Date_TimeStamp.timeStamp()-time2>=3000){
+				time2 = Date_TimeStamp.timeStamp();
+				if(!mToDevices.LightControl(mSignInfo.device, !flag))
+					System.out.println("控制失败");
+				else
+					System.out.println("控制成功");
+				flag=!flag;
+			}
 		}
 	}
 

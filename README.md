@@ -23,7 +23,7 @@ SmartHome
   * IDE:MDK 5.17.0.0 
   * 语言： C++ 、C
 * 服务器
-  * IDE：eclipse
+  * IDE：Myeclipse/eclipse
   * 语言：java
 * 移动客户端
   * IDE：Android Studio

@@ -317,9 +317,9 @@ bool App::SendCurtainInfoToServer()
 {
 	mToServer.operationType = Protocol::OperationType_Ack;
 	mToServer.dataType = Protocol::Switch::dataType;
-	mToServer.dataLength = 1;
+	mToServer.dataLength = 4;
 	if(mCurtainOn)
-		mToServer.data[0] = 4;
+		mToServer.data[0] = 1;
 	else
 		mToServer.data[0] = 0;
 	mToServer.data[1]=0;

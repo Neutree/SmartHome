@@ -25,44 +25,35 @@ public class ToDevices {
 	public boolean DoorControl(String device,boolean isOn){
 		return isOn;
 	}
-	public DoorInfo GetDoorStatus(String device){
-		DoorInfo door = new DoorInfo();
-		return door;
+	public boolean GetDoorStatus(String device,DoorInfo door){
+		return false;
 	}
 	
-	public LightInfo GetLightStatus(String device){
-		LightInfo light = new LightInfo();
-		return light;
+	public boolean GetLightStatus(String device,LightInfo light){
+		return false;
 	}
-	public CurtainInfo GetCurtainStatus(String device){
-		CurtainInfo curtain = new CurtainInfo();
-		return curtain;
+	public boolean GetCurtainStatus(String device,CurtainInfo curtain){
+		return false;
 	}
-	public SensorInfo GetSensorData(String device,int SensorName){
-		SensorInfo sensor = new SensorInfo();
-		return sensor;
+	public boolean GetSensorData(String device,int SensorName,SensorInfo sensor){
+		return false;
 	}
 	
 	class SignInfo{
-		boolean isValid;
-		String device;
-		String userName;
-		String passwd;
+		public String device;
+		public String userName;
+		public String passwd;
 	}
 	class LightInfo{
-		boolean isValid;
-		boolean isOn;
+		public boolean isOn;
 	}
 	class CurtainInfo{
-		boolean isValid;
-		boolean isOn;
+		public boolean isOn;
 	}
 	class SensorInfo{
-		boolean isValid;
-		int value;
+		public int value;
 	}
 	class DoorInfo{
-		boolean isValid;
-		boolean isOn;
+		public boolean isOn;
 	}
 }

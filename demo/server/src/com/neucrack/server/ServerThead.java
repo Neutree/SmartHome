@@ -105,23 +105,18 @@ public class ServerThead extends Thread {
 			
 			if(Date_TimeStamp.timeStamp()-time2>=10000){
 				try {
-					socket.setSoTimeout(20000);
+					socket.setSoTimeout(5000);
 				} catch (SocketException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				time2 = Date_TimeStamp.timeStamp();
-				System.out.println("开始控制");
-				if(!mToDevices.CurtainControl(mSignInfo.device, !flag))
-					System.out.println("控制失败");
+				Sensor sensor = new Sensor();
+				System.out.println("开始查询");
+				if(!mToDevices.GetSensorData(mSignInfo.device,1, sensor))
+					System.out.println("查询传感器状态失败");
 				else
-					System.out.println("控制成功");
-				flag=!flag;
-				Curtain curtain = new Curtain();
-				if(!mToDevices.GetCurtainStatus(mSignInfo.device,curtain))
-					System.out.println("查询窗帘状态失败");
-				else
-					System.out.println("查询成功，状态："+(curtain.isOn?"开":"关"));
+					System.out.println("查询成功，状态："+(sensor.value));
 			}
 		}
 	}

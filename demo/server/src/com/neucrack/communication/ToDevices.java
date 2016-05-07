@@ -333,7 +333,50 @@ public class ToDevices {
 	
 	//获取传感器状态
 	public boolean GetSensorData(String device,int SensorName,Sensor sensor){
-		return false;
+		byte[] data = new byte[50];
+		byte[] deviceNumber = MacToBytes(device);
+		data[0] = (byte) 0xab;
+		data[1] = (byte) 0xac;
+		data[2] = (byte) 0x00;
+		data[3] = (byte) 0x02;
+		data[4] = (byte) 0x03;//询问
+		System.arraycopy(deviceNumber, 0, data, 5, 6);
+		data[17] = (byte) 0x00;
+		data[18] = (byte) 0x08;
+		data[19] = (byte) (SensorName>>24&0xff);
+		data[20] = (byte) (SensorName>>16&0xff);
+		data[21] = (byte) (SensorName>>8&0xff);
+		data[22] = (byte) (SensorName&0xff);
+		data[23] = 01;
+		data[24] = 00;
+		data[25] = 00;
+		data[26] = 00;
+		
+		long crc16 = CRC.CRC16Calculate(data, 27);
+		data[27] = (byte) (crc16>>8&0xff);
+		data[28] = (byte) (crc16&0xff);
+		try {
+			mOutStream.write(data, 0, 29);;
+			int size = mInStream.read(data);
+			if(size>0){
+				if(!VerifyFrame(data))
+					return false;
+				//校验成功
+				if(data[4]!=2 || 
+						data[19] != (byte) (SensorName>>24&0xff)||
+						data[20] != (byte) (SensorName>>16&0xff)||
+						data[21] != (byte) (SensorName>>8&0xff)||
+						data[22] != (byte) (SensorName&0xff)
+						)//不是是响应信息或者不是该传感器信息
+					return false;
+				sensor.value = (int)(data[24]&0xff);//传感器数值
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	private boolean VerifyFrame(byte[] data){
@@ -343,7 +386,7 @@ public class ToDevices {
 		int datalength = (short)data[17]<<8|data[18];
 		//CRC校验
 		int parity = CRC.CRC16Calculate(data,datalength+19);
-		int parity2 = (data[19+datalength]<<8|data[20+datalength])&0xffff;
+		int parity2 = (data[19+datalength]&0xff)<<8|(data[20+datalength]&0xff);
 		if(parity != parity2)
 			return false;
 		return true;

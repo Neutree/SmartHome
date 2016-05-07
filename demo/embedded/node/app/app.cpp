@@ -154,6 +154,7 @@ void App::ReceiveAndDeal()
 			void* data;
 			static Protocol::OperationType operationType;
 			short dataType = Decode(&data,&operationType);
+			com1<<"type:"<<dataType<<"\n";
 			if(dataType == Protocol::Switch::dataType)
 			{
 				if(operationType == Protocol::OperationType_Control)
@@ -209,8 +210,10 @@ void App::ReceiveAndDeal()
 			}
 			else if(dataType == Protocol::Sensor::dataType)
 			{
+				com1<<"aaaaaaaa\n";
 				if(operationType == Protocol::OperationType_Ask)
 				{
+					com1<<"bbbbbbbbbb\n";
 					SendSensorInfoToServer();
 				}//询问开关状态
 			}
@@ -277,7 +280,7 @@ short App::Decode(void* *data,Protocol::OperationType* operationType)
 		mSensor.datalength = mToServer.data[4];
 		memcpy(mSensor.data,mToServer.data+5,mSensor.datalength);
 		mSensor.commentLength = (short)mToServer.data[1]<<8|mToServer.data[2];
-		memcpy(mSensor.comment,mToServer.data+3,((Protocol::Switch*)data)->commentLength);
+		memcpy(mSensor.comment,mToServer.data+3,((Protocol::Sensor*)data)->commentLength);
 	}
 	else if(mToServer.dataType == Protocol::Door::dataType)
 	{

@@ -12,9 +12,11 @@ public class User {
 	public User(){
 		
 	}
-	public User(String mName, String mPasswd) {
+	public User(String mName, String mPasswd,String nickName,String HeadImageAddress) {
 		this.mName = mName;
 		this.mPasswd = mPasswd;
+		mNickName = nickName;
+		mHeadPicture = HeadImageAddress;
 	}
 
 	public String getmName() {

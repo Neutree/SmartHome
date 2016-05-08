@@ -1,5 +1,7 @@
 package com.neucrack.tool;
 
+import java.io.UnsupportedEncodingException;
+
 public class StringRelated {
 
 	 public static String Byte6ToMac(byte[] c) {
@@ -41,4 +43,13 @@ public class StringRelated {
 		 return r;
 	 }
 	 
+	 public static String newString_UTF_8(String str) {
+		 try {
+			return new String(str.getBytes("utf-8"),"gbk");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
 }

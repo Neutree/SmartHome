@@ -161,7 +161,9 @@ public class ServerToDeviceThead extends Thread {
 	        return b;
 	    }
 
-
+	 public boolean IsAlive(){
+		 return !socket.isClosed();
+	 }
 	 public static void PrintBytes(byte[] c,int size){
 		 for(int i=0;i<size;++i)
 				System.out.print(Integer.toHexString(c[i]&0xff)+" ");

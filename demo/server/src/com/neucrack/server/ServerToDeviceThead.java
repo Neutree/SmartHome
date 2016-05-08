@@ -22,7 +22,7 @@ import com.neucrack.tool.Date_TimeStamp;
 /*
  * 服务器端线程处理类
  */
-public class ServerThead extends Thread {
+public class ServerToDeviceThead extends Thread {
 
 	protected Socket socket = null;
 	protected String recvData = null;
@@ -35,7 +35,7 @@ public class ServerThead extends Thread {
 	
 	private boolean mIsSginIn=false;
 
-	public ServerThead(Socket socket) {
+	public ServerToDeviceThead(Socket socket) {
 		this.socket = socket;
 	}
 
@@ -53,7 +53,6 @@ public class ServerThead extends Thread {
 		
 		long keepAliveTime = Date_TimeStamp.timeStamp();
 		long time2=Date_TimeStamp.timeStamp();
-		boolean flag=false;
 		while(true){
 			
 			//登录检测
@@ -82,7 +81,7 @@ public class ServerThead extends Thread {
 					}
 					continue;
 				}
-				if(Date_TimeStamp.timeStamp()-startTime>20000){//20s还没有登录则关闭连接
+				if(Date_TimeStamp.timeStamp()-startTime>20){//20s还没有登录则关闭连接
 					System.out.println("等待登录请求超时");
 					Close();
 				}
@@ -90,7 +89,7 @@ public class ServerThead extends Thread {
 			}
 			
 			//心跳保持包,5分钟一次
-			if(Date_TimeStamp.timeStamp()-keepAliveTime>=300000){
+			if(Date_TimeStamp.timeStamp()-keepAliveTime>=300){
 				keepAliveTime = Date_TimeStamp.timeStamp();
 				if(!mToDevices.KeepAlive(mSignInfo.device)){
 					System.out.println("心跳保持失败");
@@ -102,22 +101,7 @@ public class ServerThead extends Thread {
 				}
 				System.out.println("链路保持成功！");
 			}
-			
-			if(Date_TimeStamp.timeStamp()-time2>=10000){
-				try {
-					socket.setSoTimeout(5000);
-				} catch (SocketException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				time2 = Date_TimeStamp.timeStamp();
-				Sensor sensor = new Sensor();
-				System.out.println("开始查询");
-				if(!mToDevices.GetSensorData(mSignInfo.device,1, sensor))
-					System.out.println("查询传感器状态失败");
-				else
-					System.out.println("查询成功，状态："+(sensor.value));
-			}
+		
 		}
 	}
 

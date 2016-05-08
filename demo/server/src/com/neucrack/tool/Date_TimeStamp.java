@@ -39,8 +39,17 @@ public class Date_TimeStamp {
 	 * @return
 	 */
 	public static long timeStamp(){
+		return System.currentTimeMillis()/1000;
+	}
+	
+	/**
+	 * 取得当前时间戳（精确到毫秒）
+	 * @return
+	 */
+	public static long timeStampMs(){
 		return System.currentTimeMillis();
 	}
+	
 	
 	//  输出结果：
 	//	timeStamp=1417792627

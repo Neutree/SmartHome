@@ -1,5 +1,7 @@
+/**
+ * 与设备通信
+ */
 package com.neucrack.communication;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

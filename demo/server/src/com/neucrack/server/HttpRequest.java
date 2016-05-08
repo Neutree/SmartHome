@@ -9,6 +9,8 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
+import com.neucrack.DAO.DAOConnectionInfo;
+
 public class HttpRequest {
     /**
      * 向指定URL发送GET方法的请求
@@ -33,6 +35,8 @@ public class HttpRequest {
             connection.setRequestProperty("user-agent",
                     "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("X-LC-Id", DAOConnectionInfo.X_LC_Id);
+            connection.setRequestProperty("X-LC-Key",DAOConnectionInfo.X_LC_Key);
             // 建立实际的连接
             connection.connect();
             // 获取所有响应头字段
@@ -92,6 +96,8 @@ public class HttpRequest {
             conn.setRequestProperty("user-agent",
                     "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("X-LC-Id", DAOConnectionInfo.X_LC_Id);
+            conn.setRequestProperty("X-LC-Key",DAOConnectionInfo.X_LC_Key);
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);

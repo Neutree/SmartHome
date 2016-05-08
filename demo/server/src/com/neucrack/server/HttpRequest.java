@@ -25,7 +25,9 @@ public class HttpRequest {
         String result = "";
         BufferedReader in = null;
         try {
-            String urlNameString = url + "?" + param;
+            String urlNameString = url;
+            if(param!=null && !param.equals(""))
+            	urlNameString+= "?" + param;
             URL realUrl = new URL(urlNameString);
             // 打开和URL之间的连接
             URLConnection connection = realUrl.openConnection();

@@ -210,10 +210,8 @@ void App::ReceiveAndDeal()
 			}
 			else if(dataType == Protocol::Sensor::dataType)
 			{
-				com1<<"aaaaaaaa\n";
 				if(operationType == Protocol::OperationType_Ask)
 				{
-					com1<<"bbbbbbbbbb\n";
 					SendSensorInfoToServer();
 				}//询问开关状态
 			}

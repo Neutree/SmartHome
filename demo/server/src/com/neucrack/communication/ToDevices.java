@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import com.neucrack.devices.*;
 import com.neucrack.tool.CRC;
+import com.neucrack.tool.StringRelated;
 
 public class ToDevices {
 	private DataInputStream mInStream=null;
@@ -42,9 +43,9 @@ public class ToDevices {
 				System.arraycopy(dataToRead, 5, mDeviceNumber, 0, 6);
 				System.arraycopy(dataToRead, 19, mUserName, 0, 11);
 				System.arraycopy(dataToRead, 30, mUserPasswd, 0, 16);
-				signIn.device = Byte6ToMac(mDeviceNumber);
-				signIn.userName = BytesToString(mUserName,11);
-				signIn.userPasswd = MD5_32BytesToString(mUserPasswd);
+				signIn.device = StringRelated.Byte6ToMac(mDeviceNumber);
+				signIn.userName = StringRelated.BytesToString(mUserName,11);
+				signIn.userPasswd = StringRelated.MD5_32BytesToString(mUserPasswd);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -55,7 +56,7 @@ public class ToDevices {
 	//链路保持心跳包
 	public boolean KeepAlive(String device){
 		byte[] data = new byte[50];
-		byte[] deviceNumber = MacToBytes(device);
+		byte[] deviceNumber = StringRelated.MacToBytes(device);
 		data[0] = (byte) 0xab;
 		data[1] = (byte) 0xac;
 		data[2] = (byte) 0x00;
@@ -69,7 +70,7 @@ public class ToDevices {
 		data[20] = (byte) (crc16>>8&0xff);
 		data[21] = (byte) (crc16&0xff);
 		try {
-			mOutStream.write(data, 0, 22);;
+			mOutStream.write(data, 0, 22);
 			int size = mInStream.read(data);
 			if(size>0){
 				if(!VerifyFrame(data))
@@ -95,7 +96,7 @@ public class ToDevices {
 	//灯光控制
 	public boolean LightControl(String device,boolean isOn){
 		byte[] data = new byte[50];
-		byte[] deviceNumber = MacToBytes(device);
+		byte[] deviceNumber = StringRelated.MacToBytes(device);
 		data[0] = (byte) 0xab;
 		data[1] = (byte) 0xac;
 		data[2] = (byte) 0x00;
@@ -134,7 +135,7 @@ public class ToDevices {
 	//窗帘控制
 	public boolean CurtainControl(String device,boolean isOn){
 		byte[] data = new byte[50];
-		byte[] deviceNumber = MacToBytes(device);
+		byte[] deviceNumber = StringRelated.MacToBytes(device);
 		data[0] = (byte) 0xab;
 		data[1] = (byte) 0xac;
 		data[2] = (byte) 0x00;
@@ -173,7 +174,7 @@ public class ToDevices {
 	//门锁控制
 	public boolean DoorControl(String device,boolean isOn){
 		byte[] data = new byte[50];
-		byte[] deviceNumber = MacToBytes(device);
+		byte[] deviceNumber = StringRelated.MacToBytes(device);
 		data[0] = (byte) 0xab;
 		data[1] = (byte) 0xac;
 		data[2] = (byte) 0x00;
@@ -213,7 +214,7 @@ public class ToDevices {
 	//获取灯光状态
 	public boolean GetLightStatus(String device,Light light){
 		byte[] data = new byte[50];
-		byte[] deviceNumber = MacToBytes(device);
+		byte[] deviceNumber = StringRelated.MacToBytes(device);
 		data[0] = (byte) 0xab;
 		data[1] = (byte) 0xac;
 		data[2] = (byte) 0x00;
@@ -254,7 +255,7 @@ public class ToDevices {
 	//获取窗帘状态
 	public boolean GetCurtainStatus(String device,Curtain curtain){
 		byte[] data = new byte[50];
-		byte[] deviceNumber = MacToBytes(device);
+		byte[] deviceNumber = StringRelated.MacToBytes(device);
 		data[0] = (byte) 0xab;
 		data[1] = (byte) 0xac;
 		data[2] = (byte) 0x00;
@@ -295,7 +296,7 @@ public class ToDevices {
 	//获取，门锁状态
 	public boolean GetDoorStatus(String device,Door door){
 		byte[] data = new byte[50];
-		byte[] deviceNumber = MacToBytes(device);
+		byte[] deviceNumber = StringRelated.MacToBytes(device);
 		data[0] = (byte) 0xab;
 		data[1] = (byte) 0xac;
 		data[2] = (byte) 0x00;
@@ -334,9 +335,9 @@ public class ToDevices {
 	}
 	
 	//获取传感器状态
-	public boolean GetSensorData(String device,int SensorName,Sensor sensor){
+	public boolean GetSensorData(String device,long SensorName,Sensor sensor){
 		byte[] data = new byte[50];
-		byte[] deviceNumber = MacToBytes(device);
+		byte[] deviceNumber = StringRelated.MacToBytes(device);
 		data[0] = (byte) 0xab;
 		data[1] = (byte) 0xac;
 		data[2] = (byte) 0x00;
@@ -393,37 +394,5 @@ public class ToDevices {
 			return false;
 		return true;
 	}
-	 private static String Byte6ToMac(byte[] c) {
-	        return Integer.toHexString(((int)c[0]&0xff))+":"+Integer.toHexString(((int)c[1]&0xff))+":"+Integer.toHexString(((int)c[2]&0xff))+":"
-	        		+((short)c[3]&0xff)+":"+Integer.toHexString(((int)c[4]&0xff))+":"+Integer.toHexString(((int)c[5]&0xff)); 
-	 }
-	 
-	 private static byte[] MacToBytes(String mac) {
-		byte []macBytes = new byte[6];
-		String [] strArr = mac.split(":"); 
-		for(int i = 0;i < strArr.length; i++){
-			int value = Integer.parseInt(strArr[i],16);
-			macBytes[i] = (byte) value;
-		}
-		return macBytes;
-	 }
-	 
-	 private static String BytesToString(byte[] b,int size){
-		 String str= "";
-		 for(int i=0;i<size;++i){
-			 str+=b[i]-'0';
-		 }
-		 return str;
-	 }
-	 private static String MD5_32BytesToString(byte[] md5){
-		 String r="";
-		 String temp=null;
-		 for(int i=0;i<16;++i){
-			 temp = Integer.toHexString(((int)md5[i]&0xff));
-			 if(temp.length()<2)
-				 temp = "0"+temp;
-			 r += temp;
-		 }
-		 return r;
-	 }
+
 }

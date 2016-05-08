@@ -1,8 +1,8 @@
 package com.neucrack.DAO;
 
 public class DAOConnectionInfo {
-	String mUrl = "https://leancloud.cn:443/1.1/users";
-	String X_LC_Id="";
-	String X_LC_Key="";
-	String Content_Type="application/json";
+	public static String mUrl = "https://leancloud.cn:443/1.1/users";
+	public static String X_LC_Id="";
+	public static String X_LC_Key="";
+	public static String Content_Type="application/json";
 }

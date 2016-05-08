@@ -59,6 +59,7 @@ public class HttpRequest {
         } catch (Exception e) {
             System.out.println("发送GET请求出现异常！" + e);
             e.printStackTrace();
+            result = null;
         }
         // 使用finally块来关闭输入流
         finally {
@@ -68,6 +69,7 @@ public class HttpRequest {
                 }
             } catch (Exception e2) {
                 e2.printStackTrace();
+                result = null;
             }
         }
         return result;
@@ -117,6 +119,7 @@ public class HttpRequest {
         } catch (Exception e) {
             System.out.println("发送 POST 请求出现异常！"+e);
             e.printStackTrace();
+            result = null;
         }
         //使用finally块来关闭输出流、输入流
         finally{
@@ -130,6 +133,7 @@ public class HttpRequest {
             }
             catch(IOException ex){
                 ex.printStackTrace();
+                result = null;
             }
         }
         return result;

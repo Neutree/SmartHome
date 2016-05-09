@@ -1,5 +1,6 @@
 package com.neucrack.smarthome;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.neucrack.communication.ToServer;
+import com.neucrack.entity.PreferenceData;
+import com.neucrack.entity.User;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,7 +31,57 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id._home_fab);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        ImageView userHeadImage = (ImageView) findViewById(R.id._userImage);
+        Button room1 = (Button)findViewById(R.id._room1);
+        Button room2 = (Button)findViewById(R.id._room2);
+        Button room3 = (Button)findViewById(R.id._room3);
+
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        room1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence("deviceName","1:2:3:4:5:6");
+                Intent intent = new Intent(Home.this, subDevices.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        room2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence("deviceName","1:2:3:4:5:7");
+                Intent intent = new Intent(Home.this, subDevices.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        room3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence("deviceName","1:2:3:4:5:8");
+                Intent intent = new Intent(Home.this, subDevices.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,14 +90,12 @@ public class Home extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+
+
+        Init();
+
+
     }
 
     @Override
@@ -79,9 +135,10 @@ public class Home extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            Intent intent = new Intent(Home.this,signIn.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -97,5 +154,13 @@ public class Home extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void Init(){
+        ToServer toServer = new ToServer();
+        User user = PreferenceData.GetUserInfo();
+        if(user!=null)
+            if(!toServer.SignIn(user))
+                Toast.makeText(getApplicationContext(),"无法登录，请检查网络",Toast.LENGTH_SHORT).show();
+
     }
 }

@@ -125,21 +125,18 @@ public class ToServer {
         if(user==null)
             return -1;
         RequestData d = new RequestData();
-        d.mData = new byte[17];
+        d.mData = new byte[14];
         byte[] deviceNameBytes = StringRelated.MacToBytes(deviceName);
         System.arraycopy(deviceNameBytes, 0, d.mData, 0, 6);
         d.mData[6] = (byte) (subDeviceNumber>>24&0xff);
         d.mData[7] = (byte) (subDeviceNumber>>16&0xff);
         d.mData[8] = (byte) (subDeviceNumber>>8&0xff);
         d.mData[9] = (byte) (subDeviceNumber&0xff);
-        d.mData[10]= 4;
+        d.mData[10]= 1;
         d.mData[11]=0;
         d.mData[12]=0;
         d.mData[13]=0;
-        d.mData[14]=0;
-        d.mData[15]=0;
-        d.mData[16]=0;
-        if(!SendRequest((short)0x0002,(byte)0x03,user.getmSession(),(short)13,d))
+        if(!SendRequest((short)0x0002,(byte)0x03,user.getmSession(),(short)14,d))
             return -1;
         return 1;
     }
@@ -161,7 +158,7 @@ public class ToServer {
         d.mData[12]=0;
         if(!SendRequest((short)0x0001,(byte)0x03,user.getmSession(),(short)13,d))
             return -1;
-        return d.mData[10];
+        return d.mData[11];
     }
 
 

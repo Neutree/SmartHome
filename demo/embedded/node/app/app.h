@@ -35,7 +35,7 @@ public:
 	
 	
 	bool SendLightInfoToServer();
-	bool SendCurtainInfoToServer();
+	bool SendCurtainInfoToServer(bool);
 	bool SendSensorInfoToServer();
 	bool SendKeepAliveToServer();
 	

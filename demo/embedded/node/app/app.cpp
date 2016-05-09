@@ -175,6 +175,7 @@ void App::ReceiveAndDeal()
 					}
 					else if(*((Protocol::Switch*)data)->comment == 2)//窗帘
 					{
+						SendCurtainInfoToServer(((Protocol::Switch*)data)->status==1);
 						//窗帘开关
 						if(((Protocol::Switch*)data)->status==0)
 						{
@@ -184,7 +185,6 @@ void App::ReceiveAndDeal()
 						{
 							OpenCurtain();
 						}
-						SendCurtainInfoToServer();
 					}
 					else if(*((Protocol::Switch*)data)->comment == 3)//门锁
 					{
@@ -200,7 +200,7 @@ void App::ReceiveAndDeal()
 					}
 					else if(*((Protocol::Switch*)data)->comment == 2)//窗帘
 					{
-						SendCurtainInfoToServer();
+						SendCurtainInfoToServer(mCurtainOn);
 					}
 					else if(*((Protocol::Switch*)data)->comment == 3)//门锁
 					{
@@ -314,12 +314,12 @@ bool App::SendLightInfoToServer()
 	mIsAlive = false;
 	return false;
 }
-bool App::SendCurtainInfoToServer()
+bool App::SendCurtainInfoToServer(bool isOn)
 {
 	mToServer.operationType = Protocol::OperationType_Ack;
 	mToServer.dataType = Protocol::Switch::dataType;
 	mToServer.dataLength = 4;
-	if(mCurtainOn)
+	if(isOn)
 		mToServer.data[0] = 1;
 	else
 		mToServer.data[0] = 0;

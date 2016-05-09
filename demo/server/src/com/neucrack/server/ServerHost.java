@@ -13,7 +13,7 @@ import com.neucrack.tool.Session;
 
 public class ServerHost {
 	
-	private static ArrayList<ServerToDeviceThead> mScocketList = new ArrayList<ServerToDeviceThead>();
+	private static ArrayList<ServerToDeviceThead> mSocketList = new ArrayList<ServerToDeviceThead>();
 	
 	/*
 	 * 基于TCP协议的Socket通信，实现用户登录 服务器端
@@ -37,7 +37,7 @@ public class ServerHost {
 						System.out.println("Server Started，waiting for User request at port 8099: ");
 						while (true) {// 循环监听等待客户端的连接
 							socket = serverSocket.accept();// 调用accept()方法开始监听，等待客户端的连接
-							ServerToUserThread userThread = new ServerToUserThread(mScocketList,socket);// 创建一个新的线程响应客户端的连接
+							ServerToUserThread userThread = new ServerToUserThread(mSocketList,socket);// 创建一个新的线程响应客户端的连接
 							userThread.start();// 启动线程
 							System.out.println("用户发起请求，地址："+socket.getInetAddress());
 						}
@@ -61,7 +61,8 @@ public class ServerHost {
 				socket = serverSocket.accept();// 调用accept()方法开始监听，等待客户端的连接
 				ServerToDeviceThead serverThread = new ServerToDeviceThead(socket);// 创建一个新的线程响应客户端的连接
 				serverThread.start();// 启动线程
-				mScocketList.add(serverThread);
+				mSocketList.add(serverThread);
+				DeleteOfflineDevices();//删除掉已经掉线了的设备
 				showInfo(socket);
 
 			}
@@ -73,8 +74,14 @@ public class ServerHost {
 	}
 
 	public static void showInfo(Socket socket) {
-		System.out.println("已连接网关数量：" + mScocketList.size());
+		System.out.println("已连接设备数量：" + mSocketList.size());
 		InetAddress address = socket.getInetAddress();
 		System.out.println("新增网关IP地址：" + address.getHostAddress());
+	}
+	public static void DeleteOfflineDevices(){
+		for (int i = 0;i<mSocketList.size();++i) {
+			if(!mSocketList.get(i).IsAlive())//已经关闭连接了，可以移除
+				mSocketList.remove(i);
+		}
 	}
 }

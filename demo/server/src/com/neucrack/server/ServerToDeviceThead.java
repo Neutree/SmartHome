@@ -73,7 +73,7 @@ public class ServerToDeviceThead extends Thread {
 						System.out.println("登录验证失败！！！！");
 						break;
 					}
-					System.out.println("设备登录成功!!");
+					System.out.println("设备登录成功!!设备号："+mSignInfo.device+"用户名："+mSignInfo.userName);
 					mIsSginIn = true;
 					try {
 						socket.setSoTimeout(5000);

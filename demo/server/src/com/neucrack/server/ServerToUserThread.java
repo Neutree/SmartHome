@@ -60,7 +60,7 @@ public class ServerToUserThread extends Thread {
 				}
 				byte[] sessionBytes = new byte[32];
 				System.arraycopy(dataToRead, 5, sessionBytes, 0, 32);
-				String sessionString = StringRelated.BytesToString(sessionBytes, 32);
+				String sessionString = StringRelated.SessionTokenBytes32ToString(sessionBytes);
 				user.setSession(sessionString);
 				if(!mToUser.CheckIfSignedIn(user.getSession())){//未登录
 					
@@ -100,12 +100,13 @@ public class ServerToUserThread extends Thread {
 							Close();
 							return;
 						}
+						System.out.println("用户登录成功，用户名："+user.getmName());
 					}
 				}
 				else{//已经登录
 					user.setmName((String)Session.getAttribute(user.getSession()));//根据session获得用户名
 					
-					String device = StringRelated.Byte6ToMac(dataToRead,29);//要通信的设备号
+					String device = StringRelated.Byte6ToMac(dataToRead,45);//要通信的设备号
 					//从在线设备列表中获得该设备号的设备通信的对象
 					ToDevices toDevice = null;
 					for (int i = 0;i<mSocketList.size();++i) {
@@ -118,14 +119,24 @@ public class ServerToUserThread extends Thread {
 							}
 						}
 					}
-					
+					if(toDevice==null){
+						System.out.println("该设备没有登录,无法连接到设备！！！");
+						Close();
+						return;
+					}
 					if(dataToRead[4] == 0x01){//控制请求
 						int type =  ((int)dataToRead[2]<<8&0xff00) | ((int)dataToRead[3]&0xff);
-						long switchName = (dataToRead[35]<<24&0xff000000)|(dataToRead[36]<<16&0xff0000)|(dataToRead[37]<<8&0xff00)|(dataToRead[38]&0xff);
+						long switchName = (dataToRead[51]<<24&0xff000000)|(dataToRead[52]<<16&0xff0000)|(dataToRead[53]<<8&0xff00)|(dataToRead[54]&0xff);
 						switch (type) {
 						case DeviceSwitch.DEVICE_TYPE:
-							if(!mToUser.ControlSwitch(toDevice,user,device,switchName,(dataToRead[39]==1)))
+							int timeout = mSocket.getSoTimeout();
+							mSocket.setSoTimeout(30000);
+							if(!mToUser.ControlSwitch(toDevice,user,device,switchName,(dataToRead[55]==1)))
 								System.out.println("控制开关失败");
+							else {
+								System.out.println("控制开关成功");
+							}
+							mSocket.setSoTimeout(timeout);
 							break;
 						case DeviceDoor.DEVICE_TYPE:
 							System.out.println("控制门请使用开关命令");
@@ -135,9 +146,9 @@ public class ServerToUserThread extends Thread {
 							break;
 						}
 					}
-					else if(dataToRead[2] == 0x00 && dataToRead[3] == 0x03){//询问请求
+					else if(dataToRead[4] == 0x03){//询问请求
 						int type =  ((int)dataToRead[2]<<8&0xff00) | ((int)dataToRead[3]&0xff); 
-						long switchName = (dataToRead[35]<<24&0xff000000)|(dataToRead[36]<<16&0xff0000)|(dataToRead[37]<<8&0xff00)|(dataToRead[38]&0xff);
+						long switchName = (dataToRead[51]<<24&0xff000000)|(dataToRead[52]<<16&0xff0000)|(dataToRead[53]<<8&0xff00)|(dataToRead[54]&0xff);
 						switch (type) {
 						case DeviceSwitch.DEVICE_TYPE:
 							if(!mToUser.QuerySwitch(toDevice,user,device,switchName))
@@ -161,6 +172,14 @@ public class ServerToUserThread extends Thread {
 			e.printStackTrace();
 		} catch (SocketTimeoutException e) {
 			System.out.println("超时，接收请求消息失败");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			mOutStream.flush();
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -72,4 +72,13 @@ public class StringRelated {
 		}
 		return r;
 	}
+	 public static String SessionTokenBytes32ToString(byte[] session){
+		 String rString = "";
+		 for(int i=0;i<32;++i){
+			 if(session[i]==0)
+				 break;
+			 rString += (char)session[i];
+		 }
+		 return rString;
+	 }
 }

@@ -1,6 +1,10 @@
 package com.neucrack.smarthome;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,6 +31,9 @@ public class subDevices extends AppCompatActivity {
     Button lightSensor =null;
     Button updateStatus =null;
 
+    private View msubDevicesView =null;
+    private View mProgressView = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +47,8 @@ public class subDevices extends AppCompatActivity {
         curtain = (Button) findViewById(R.id._curtain);
         lightSensor = (Button) findViewById(R.id._lightSensor);
         updateStatus = (Button) findViewById(R.id._updateStatus);
-
+        msubDevicesView = findViewById(R.id._subDevices);
+        mProgressView = findViewById(R.id._toServerProgress);
 
         Bundle bundle = getIntent().getExtras();
         deviceName=bundle.getString("deviceName");
@@ -64,6 +72,7 @@ public class subDevices extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 开启一个子线程，进行网络操作，等待有返回结果，使用handler通知UI(socket通信必须不在UI线程下进行，以免失去响应)
+                DisableAllButton();
                 new Thread(SetLight).start();
             }
         });
@@ -73,6 +82,7 @@ public class subDevices extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 开启一个子线程，进行网络操作，等待有返回结果，使用handler通知UI(socket通信必须不在UI线程下进行，以免失去响应)
+                DisableAllButton();
                 new Thread(SetCurtain).start();
             }
         });
@@ -81,6 +91,7 @@ public class subDevices extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 开启一个子线程，进行网络操作，等待有返回结果，使用handler通知UI(socket通信必须不在UI线程下进行，以免失去响应)
+                DisableAllButton();
                 new Thread(GetSensor).start();
             }
         });
@@ -89,6 +100,7 @@ public class subDevices extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 开启一个子线程，进行网络操作，等待有返回结果，使用handler通知UI(socket通信必须不在UI线程下进行，以免失去响应)
+                DisableAllButton();
                 new Thread(GetLight).start();
                 new Thread(GetCurtain).start();
                 new Thread(GetSensor).start();
@@ -96,10 +108,10 @@ public class subDevices extends AppCompatActivity {
         });
 
         // 开启一个子线程，进行网络操作，等待有返回结果，使用handler通知UI(socket通信必须不在UI线程下进行，以免失去响应)
+        DisableAllButton();
         new Thread(GetLight).start();
         new Thread(GetCurtain).start();
         new Thread(GetSensor).start();
-
     }
 
     Handler SetLightHandler = new Handler() {
@@ -118,6 +130,7 @@ public class subDevices extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), "灯光控制失败！！", Toast.LENGTH_SHORT).show();
             }
+            EnableAllButton();
         }
     };
 
@@ -150,11 +163,12 @@ public class subDevices extends AppCompatActivity {
                     curtain.setBackgroundColor(0xFF2EBD5F);
                 else
                     curtain.setBackgroundColor(0xffff4444);
-
+                Toast.makeText(getApplicationContext(),"窗帘控制成功",Toast.LENGTH_SHORT).show();
             }
             else{
                 Toast.makeText(getApplicationContext(),"窗帘控制失败",Toast.LENGTH_SHORT).show();
             }
+            EnableAllButton();
         }
     };
 
@@ -168,6 +182,11 @@ public class subDevices extends AppCompatActivity {
             // TODO
             // 在这里进行 http request.网络请求相关操作
             boolean result = toServer.SetSwitch(deviceName,2,!lightOn);
+            try {
+                Thread.sleep(6000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Message msg = new Message();
             Bundle data = new Bundle();
             data.putBoolean("result", result);
@@ -193,6 +212,7 @@ public class subDevices extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), "灯光状态获取失败！！", Toast.LENGTH_SHORT).show();
             }
+            EnableAllButton();
         }
     };
 
@@ -231,6 +251,7 @@ public class subDevices extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), "窗帘状态获取失败！！", Toast.LENGTH_SHORT).show();
             }
+            EnableAllButton();
         }
     };
 
@@ -269,6 +290,7 @@ public class subDevices extends AppCompatActivity {
                 lightSensor.setBackgroundColor(0xffff4444);
                 Toast.makeText(getApplicationContext(), "光感值获取失败！！", Toast.LENGTH_SHORT).show();
             }
+            EnableAllButton();
         }
     };
 
@@ -291,4 +313,55 @@ public class subDevices extends AppCompatActivity {
         }
     };
 
+    public void EnableAllButton(){
+        showProgress(false);
+        light.setEnabled(true);
+        lightSensor.setEnabled(true);
+        curtain.setEnabled(true);
+        updateStatus.setEnabled(true);
+    }
+
+    public void DisableAllButton(){
+        showProgress(true);
+        light.setEnabled(false);
+        lightSensor.setEnabled(false);
+        curtain.setEnabled(false);
+        updateStatus.setEnabled(false);
+    }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            msubDevicesView.setVisibility(show ? View.GONE : View.VISIBLE);
+            msubDevicesView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    msubDevicesView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            msubDevicesView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
 }

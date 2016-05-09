@@ -12,13 +12,24 @@
     tools:context="com.neucrack.smarthome.subDevices"
     tools:showIn="@layout/activity_sub_devices">
 
-
+    <ProgressBar
+        android:id="@+id/_toServerProgress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/_subDevices"
+        android:gravity="center_horizontal">
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/gridLayout">
+>
 
         <Button
             android:layout_width="wrap_content"
@@ -64,9 +75,9 @@
         android:layout_height="wrap_content"
         android:text="更新状态"
         android:id="@+id/_updateStatus"
-        android:layout_alignTop="@+id/gridLayout"
         android:layout_alignParentRight="true"
         android:layout_marginTop="58dp"
         android:background="@android:color/holo_blue_dark"
         android:textColor="@android:color/white" />
+    </RelativeLayout>
 </RelativeLayout>

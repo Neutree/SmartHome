@@ -44,7 +44,7 @@ public class ToUser {
 		int datalength = (short)dataToRead[43]<<8|dataToRead[44];
 		//CRCÐ£Ñé
 		int parity = CRC.CRC16Calculate(dataToRead,datalength+45);
-		int parity2 = (dataToRead[45+datalength]<<8|dataToRead[46+datalength])&0xffff;
+		int parity2 = (dataToRead[45+datalength]<<8|dataToRead[46+datalength]&0xff)&0xffff;
 		if(parity != parity2)
 			return false;
 		return true;
@@ -227,6 +227,6 @@ public class ToUser {
 		byte deviceBytes[] = StringRelated.MacToBytes(device);
 		byte[] data = {0,0,0,0,0,0,0,0,0,1,1,(byte)value,0,0};
 		System.arraycopy(deviceBytes, 0, data, 0, 6);
-		return SendToUser((short)0x0001, (byte)2, user.getSession(), (short)14, data);
+		return SendToUser((short)0x0002, (byte)2, user.getSession(), (short)14, data);
 	}
 }

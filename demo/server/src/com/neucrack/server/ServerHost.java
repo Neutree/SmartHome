@@ -39,6 +39,7 @@ public class ServerHost {
 							socket = serverSocket.accept();// 调用accept()方法开始监听，等待客户端的连接
 							ServerToUserThread userThread = new ServerToUserThread(mScocketList,socket);// 创建一个新的线程响应客户端的连接
 							userThread.start();// 启动线程
+							System.out.println("用户发起请求，地址："+socket.getInetAddress());
 						}
 					}
 					catch (Exception e) {

@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import com.neucrack.communication.ToDevices;
@@ -57,14 +58,9 @@ public class ServerToUserThread extends Thread {
 					Close();
 					return;
 				}
-				String sessionString = "";
-				String temp=null;
-				for(int i=0;i<16;++i){//获取session值
-					temp = Integer.toHexString(((int)dataToRead[i+5]&0xff));
-					if(temp.length()<2)
-						temp = "0"+temp;
-					sessionString += temp;
-				}
+				byte[] sessionBytes = new byte[32];
+				System.arraycopy(dataToRead, 5, sessionBytes, 0, 32);
+				String sessionString = StringRelated.BytesToString(sessionBytes, 32);
 				user.setSession(sessionString);
 				if(!mToUser.CheckIfSignedIn(user.getSession())){//未登录
 					
@@ -74,11 +70,11 @@ public class ServerToUserThread extends Thread {
 						return;
 					}
 					byte[] userName = new byte[11];
-					System.arraycopy(dataToRead, 29, userName, 0, 11);
+					System.arraycopy(dataToRead, 45, userName, 0, 11);
 					String name = StringRelated.BytesToString(userName,11);//获取用户名
 					byte[] userPasswd = new byte[16];
-					System.arraycopy(dataToRead, 40, userPasswd, 0, 16);
-					String passwd = StringRelated.MD5_32BytesToString(userPasswd);//获取用户名
+					System.arraycopy(dataToRead, 56, userPasswd, 0, 16);
+					String passwd = StringRelated.MD5_32_BytesToString(userPasswd);//获取密码
 					user.setmName(name);
 					user.setmPasswd(passwd);
 					
@@ -162,13 +158,11 @@ public class ServerToUserThread extends Thread {
 				}
 			}
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Close();
+		} catch (SocketTimeoutException e) {
+			System.out.println("超时，接收请求消息失败");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Close();
 		}
 		Close();
 	}
@@ -178,7 +172,6 @@ public class ServerToUserThread extends Thread {
 		try {
 			mInStream = new DataInputStream(mSocket.getInputStream());
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -186,7 +179,6 @@ public class ServerToUserThread extends Thread {
 		try {
 			mOutStream = new DataOutputStream(mSocket.getOutputStream());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -204,7 +196,6 @@ public class ServerToUserThread extends Thread {
 			if (mSocket != null)
 				mSocket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Abnormal , Socket : 关闭socket资源异常 ：");
 			e.printStackTrace();
 		}

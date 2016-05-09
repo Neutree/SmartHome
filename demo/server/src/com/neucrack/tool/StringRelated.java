@@ -31,7 +31,7 @@ public class StringRelated {
 		 }
 		 return str;
 	 }
-	 public static String MD5_32BytesToString(byte[] md5){
+	 public static String MD5_32_BytesToString(byte[] md5){
 		 String r="";
 		 String temp=null;
 		 for(int i=0;i<16;++i){
@@ -43,6 +43,17 @@ public class StringRelated {
 		 return r;
 	 }
 	 
+	 public static byte[] MD5_32_StringToBytes(String md5){
+		 byte[] r=new byte[16];
+		 String temp;
+		 for(int i=0;i<16;++i){
+			 temp = md5.substring(i*2,i*2+2);
+			 r[i]= (byte) (Integer.valueOf(temp,16)&0xff); 
+		 }
+		 return r;
+	 }
+	 
+	 
 	 public static String newString_UTF_8(String str) {
 		 try {
 			return new String(str.getBytes("utf-8"),"gbk");
@@ -51,5 +62,14 @@ public class StringRelated {
 			return null;
 		}
 		
+	}
+	 public static byte[] SessionTokenToBytes32(String session) {
+		byte[] r = new byte[32];
+		byte[] sessionbytes = session.getBytes();
+		System.arraycopy(sessionbytes, 0, r, 0, sessionbytes.length);
+		for(int i=0;i<32-sessionbytes.length;++i){
+			r[sessionbytes.length+i]='\0';
+		}
+		return r;
 	}
 }

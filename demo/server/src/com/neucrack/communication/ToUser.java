@@ -36,20 +36,22 @@ public class ToUser {
 
 
 	public boolean VerifyFrame(byte[] dataToRead){
+		if(dataToRead.length<47)
+			return false;
 		//帧头
 		if(((short)dataToRead[0]&0xff)!=0xab || ((short)dataToRead[1]&0xff)!=0xac)
 			return false;
-		int datalength = (short)dataToRead[17]<<8|dataToRead[18];
+		int datalength = (short)dataToRead[43]<<8|dataToRead[44];
 		//CRC校验
-		int parity = CRC.CRC16Calculate(dataToRead,datalength+19);
-		int parity2 = (dataToRead[19+datalength]<<8|dataToRead[20+datalength])&0xffff;
+		int parity = CRC.CRC16Calculate(dataToRead,datalength+45);
+		int parity2 = (dataToRead[45+datalength]<<8|dataToRead[46+datalength])&0xffff;
 		if(parity != parity2)
 			return false;
 		return true;
 	}
 	public boolean CheckIfSignedIn(String session){
 		//验证用户名和session值
-		if(null!=Session.getAttribute(session))
+		if(null==Session.getAttribute(session))
 		{
 			return false;
 		}
@@ -63,12 +65,13 @@ public class ToUser {
 			System.out.println("验证用户失败，错误代码："+result);
 		}		
 		//随机数+时间戳作为session key
-		long randomVal = (long)(1+Math.random()*(60000-1+1));
+		/*long randomVal = (long)(1+Math.random()*(60000-1+1));
 		String sessionKey =""+randomVal+Date_TimeStamp.timeStamp();
 		sessionKey = Encrypt.md5(sessionKey);//对session key进行MD5加密
 		Session.setAttribute(sessionKey, user);
 		user.setSession(sessionKey);
-		//响应用户的登录消息
+		*///不使用随机数+时间戳，采用
+		//响应用户的登录消息，dao.VerifyUser(user)里面会添加sessionToken
 		SendToUserSignInResult(user,result);
 		return result;
 	}
@@ -94,7 +97,15 @@ public class ToUser {
 	
 	
 	private boolean SendToUserSignInResult(User user,int data){
-		byte d[] ={ (byte) (data&0xff)};
+		byte[] d = new byte[31];
+		byte[] userName = user.getmName().getBytes();
+		byte[] userPassword = StringRelated.MD5_32_StringToBytes(user.getmPasswd());
+		System.arraycopy(userName, 0, d, 0, 11);
+		System.arraycopy(userPassword, 0, d, 11, 16);
+		d[27] = (byte) (data>>24&0xff);
+		d[28] = (byte) (data>>16&0xff);
+		d[29] = (byte) (data>>8&0xff);
+		d[30] = (byte) (data&0xff);
 		return SendToUser((short)0x0011,(byte)0x02,user.getSession(),(short)31,d);
 	}
 	
@@ -113,22 +124,23 @@ public class ToUser {
 	 * @return
 	 */
 	private boolean  SendToUser(Short type,byte operationType,String session,Short dataLength,byte[] data) {
-		byte[] dataToWrite = new byte[31+dataLength];
-		byte[] sessionBytes = session.getBytes();
+		byte[] dataToWrite = new byte[47+dataLength];
+		byte[] sessionBytes = StringRelated.SessionTokenToBytes32(session);
 		dataToWrite[0] = (byte) 0xab;
 		dataToWrite[1] = (byte) 0xac;
 		dataToWrite[2] = (byte) (type>>8&0xff);
 		dataToWrite[3] = (byte) (type&0xff);
 		dataToWrite[4] = (byte) operationType;
-		System.arraycopy(sessionBytes, 0, dataToWrite, 5, 16);
-		dataToWrite[27] = (byte) (dataLength>>8&0xff);
-		dataToWrite[28] = (byte) (dataLength&0xff);
-		System.arraycopy(data, 0, dataToWrite, 29, dataLength);
-		long crc16 = CRC.CRC16Calculate(dataToWrite, dataLength+29);
-		dataToWrite[29+dataLength] = (byte) (crc16>>8&0xff);
-		dataToWrite[30+dataLength] = (byte) (crc16&0xff);
+		System.arraycopy(sessionBytes, 0, dataToWrite, 5, 32);
+		dataToWrite[43] = (byte) (dataLength>>8&0xff);
+		dataToWrite[44] = (byte) (dataLength&0xff);
+		System.arraycopy(data, 0, dataToWrite, 45, dataLength);
+		long crc16 = CRC.CRC16Calculate(dataToWrite, dataLength+45);
+		dataToWrite[45+dataLength] = (byte) (crc16>>8&0xff);
+		dataToWrite[46+dataLength] = (byte) (crc16&0xff);
 		try {
-			mOutStream.write(dataToWrite, 0, 31+dataLength); 
+			mOutStream.write(dataToWrite, 0, 47+dataLength); 
+			mOutStream.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

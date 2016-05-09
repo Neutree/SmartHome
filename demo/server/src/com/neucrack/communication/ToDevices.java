@@ -45,7 +45,7 @@ public class ToDevices {
 				System.arraycopy(dataToRead, 30, mUserPasswd, 0, 16);
 				signIn.device = StringRelated.Byte6ToMac(mDeviceNumber);
 				signIn.userName = StringRelated.BytesToString(mUserName,11);
-				signIn.userPasswd = StringRelated.MD5_32BytesToString(mUserPasswd);
+				signIn.userPasswd = StringRelated.MD5_32_BytesToString(mUserPasswd);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

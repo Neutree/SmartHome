@@ -14,8 +14,10 @@ import java.sql.Time;
 
 import org.omg.CORBA.DATA_CONVERSION;
 
+import com.neucrack.DAO.DAOHelper;
 import com.neucrack.communication.ToDevices;
 import com.neucrack.devices.*;
+import com.neucrack.entity.User;
 import com.neucrack.tool.CRC;
 import com.neucrack.tool.Date_TimeStamp;
 
@@ -131,7 +133,15 @@ public class ServerToDeviceThead extends Thread {
 	
 	//验证设备和用户
 	private boolean SignInVerify() {
-		//查找数据库有无数据以及设备对应是否正确
+		//查找数据库有无数据、用户登录是否成功以及改设备是否为当前用户的设备
+		DAOHelper daoHelper = new DAOHelper();
+		if(daoHelper.VerifyUser(new User(mSignInfo.userName, mSignInfo.userPasswd, "", ""))<=0)
+			return false;//用户验证失败
+		System.out.println(mSignInfo.device);
+		String nameString =daoHelper.QueryOwnerOfDevice(mSignInfo.device);
+		System.out.println(nameString);
+		if(nameString==null||!nameString.equals(mSignInfo.userName))
+			return false;
 		return true;
 	}
 	

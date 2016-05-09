@@ -34,7 +34,7 @@ public class ServerHost {
 						Socket socket = null;
 	
 						// 2.调用accept()方法开始监听，等待客户端的连接
-						System.out.println("Server Started，waiting for request at port 8099: ");
+						System.out.println("Server Started，waiting for User request at port 8099: ");
 						while (true) {// 循环监听等待客户端的连接
 							socket = serverSocket.accept();// 调用accept()方法开始监听，等待客户端的连接
 							ServerToUserThread userThread = new ServerToUserThread(mScocketList,socket);// 创建一个新的线程响应客户端的连接
@@ -55,7 +55,7 @@ public class ServerHost {
 			Socket socket = null;
 
 			// 2.调用accept()方法开始监听，等待客户端的连接
-			System.out.println("Server Started，waiting for connect at port 8090:");
+			System.out.println("Server Started，waiting for devices connect at port 8090:");
 			while (true) {// 循环监听等待客户端的连接
 				socket = serverSocket.accept();// 调用accept()方法开始监听，等待客户端的连接
 				ServerToDeviceThead serverThread = new ServerToDeviceThead(socket);// 创建一个新的线程响应客户端的连接

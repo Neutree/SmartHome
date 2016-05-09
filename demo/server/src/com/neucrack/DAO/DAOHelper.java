@@ -25,8 +25,10 @@ public class DAOHelper {
 		JSONObject jsonObject =null;
 		try {
 			String result = HttpRequest.sendGet(DAOConnectionInfo.mUrl+"login", param);
-			if(result == null)
+			if(result == null){
+				System.out.println("用户登录错误，数据错误或者数据服务器响应失败，请看返回的响应，错误400则为服务器响应失败，请重试");
 				return -1;
+			}
 			 jsonObject= new JSONObject(result);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -47,8 +49,10 @@ public class DAOHelper {
 		JSONObject jsonObject =null;
 		try {
 			String result = HttpRequest.sendGet(DAOConnectionInfo.mUrl+"login", param);
-			if(result == null)
+			if(result == null){
+				System.out.println("管理员登录错误，数据错误或者数据服务器响应失败，请看返回的响应，错误400则为服务器响应失败，请重试");
 				return -1;
+			}
 			 jsonObject= new JSONObject(result);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -73,8 +77,10 @@ public class DAOHelper {
 		JSONObject jsonObject =null;
 		try {
 			String result = HttpRequest.sendGet(DAOConnectionInfo.mUrl+"login", param);
-			if(result == null)
+			if(result == null){
+				System.out.println("验证用户信息错误，数据错误或者数据服务器响应失败，请看返回的响应，错误400则为服务器响应失败，请重试");
 				return -1;
+			}
 			 jsonObject= new JSONObject(result);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -130,8 +136,10 @@ public class DAOHelper {
 		JSONObject jsonObject =null;
 		try {
 			String result = HttpRequest.sendGet(DAOConnectionInfo.mUrl+"classes/Devices", param);
-			if(result == null)
+			if(result == null){
+				System.out.println("获取设备信息错误，数据错误或者数据服务器响应失败");
 				return null;
+			}
 			 jsonObject= (JSONObject)(new JSONObject(result)).getJSONArray("results").get(0);
 			 if(!jsonObject.get("deviceName").equals(deviceName))
 				 return  null;

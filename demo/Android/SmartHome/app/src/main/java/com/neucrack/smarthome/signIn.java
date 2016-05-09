@@ -352,10 +352,14 @@ public class signIn extends AppCompatActivity implements LoaderCallbacks<Cursor>
                 result = true;//注册成功
             if(result)
                 PreferenceData.SaveIsRememberUser(mIsRememberUser);
-            if(result)
-                Log.v("debug","登录成功");
-            else
-               Log.v("debug","登录失败");
+            if(result) {
+                Log.v("debug", "登录成功");
+                PreferenceData.mIsSignedIn = true;
+            }
+            else {
+                Log.v("debug", "登录失败");
+                PreferenceData.mIsSignedIn = false;
+            }
             Log.v("debug","登录结束");
             return result;
         }

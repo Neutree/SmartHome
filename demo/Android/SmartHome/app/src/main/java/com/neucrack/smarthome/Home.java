@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,7 +24,7 @@ import com.neucrack.entity.User;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    NavigationView mNavigationView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,7 @@ public class Home extends AppCompatActivity
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id._home_fab);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         ImageView userHeadImage = (ImageView) findViewById(R.id._userImage);
         Button room1 = (Button)findViewById(R.id._room1);
         Button room2 = (Button)findViewById(R.id._room2);
@@ -48,7 +49,7 @@ public class Home extends AppCompatActivity
         toggle.syncState();
 
 
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
 
         room1.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +136,7 @@ public class Home extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_camera) {
+        if (id == R.id._nav_user) {
             // Handle the camera action
             Intent intent = new Intent(Home.this,signIn.class);
             startActivity(intent);
@@ -158,9 +159,13 @@ public class Home extends AppCompatActivity
     public void Init(){
         ToServer toServer = new ToServer();
         User user = PreferenceData.GetUserInfo();
-        if(user!=null)
-            if(!toServer.SignIn(user))
-                Toast.makeText(getApplicationContext(),"无法登录，请检查网络",Toast.LENGTH_SHORT).show();
-
+        if(user!=null) {
+            if (!toServer.SignIn(user)) {
+                Toast.makeText(getApplicationContext(), "无法登录，请检查网络", Toast.LENGTH_SHORT).show();
+                PreferenceData.mIsSignedIn = false;
+            }
+            else
+                PreferenceData.mIsSignedIn = true;
+        }
     }
 }

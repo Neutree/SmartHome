@@ -6,7 +6,7 @@ import java.util.prefs.Preferences;
  * Created by neucrack on 2016-05-09.
  */
 public class PreferenceData {
-
+    public static boolean mIsSignedIn = false;
     public static boolean SaveUserInfo(User user){
         Preferences prefs;
         prefs = Preferences.userRoot().node("PreferenceData");

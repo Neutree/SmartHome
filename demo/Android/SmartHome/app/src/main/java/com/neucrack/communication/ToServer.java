@@ -100,6 +100,70 @@ public class ToServer {
         return true;
     }
 
+    public boolean SetSwitch(String deviceName, int subDeviceNumber, boolean isOn) {
+        User user = PreferenceData.GetUserInfo();
+        if(user==null)
+            return false;
+        RequestData d = new RequestData();
+        d.mData = new byte[13];
+        byte[] deviceNameBytes = StringRelated.MacToBytes(deviceName);
+        System.arraycopy(deviceNameBytes, 0, d.mData, 0, 6);
+        d.mData[6] = (byte) (subDeviceNumber>>24&0xff);
+        d.mData[7] = (byte) (subDeviceNumber>>16&0xff);
+        d.mData[8] = (byte) (subDeviceNumber>>8&0xff);
+        d.mData[9] = (byte) (subDeviceNumber&0xff);
+        d.mData[10]= (byte) (isOn?1:0);
+        d.mData[11]=0;
+        d.mData[12]=0;
+        if(!SendRequest((short)0x0001,(byte)0x01,user.getmSession(),(short)13,d))
+            return false;
+        return true;
+    }
+
+    public long GetSensor(String deviceName, int subDeviceNumber) {
+        User user = PreferenceData.GetUserInfo();
+        if(user==null)
+            return -1;
+        RequestData d = new RequestData();
+        d.mData = new byte[17];
+        byte[] deviceNameBytes = StringRelated.MacToBytes(deviceName);
+        System.arraycopy(deviceNameBytes, 0, d.mData, 0, 6);
+        d.mData[6] = (byte) (subDeviceNumber>>24&0xff);
+        d.mData[7] = (byte) (subDeviceNumber>>16&0xff);
+        d.mData[8] = (byte) (subDeviceNumber>>8&0xff);
+        d.mData[9] = (byte) (subDeviceNumber&0xff);
+        d.mData[10]= 4;
+        d.mData[11]=0;
+        d.mData[12]=0;
+        d.mData[13]=0;
+        d.mData[14]=0;
+        d.mData[15]=0;
+        d.mData[16]=0;
+        if(!SendRequest((short)0x0002,(byte)0x03,user.getmSession(),(short)13,d))
+            return -1;
+        return 1;
+    }
+
+    public int GetSwitchStatus(String deviceName, int subDeviceNumber) {
+        User user = PreferenceData.GetUserInfo();
+        if(user==null)
+            return -1;
+        RequestData d = new RequestData();
+        d.mData = new byte[13];
+        byte[] deviceNameBytes = StringRelated.MacToBytes(deviceName);
+        System.arraycopy(deviceNameBytes, 0, d.mData, 0, 6);
+        d.mData[6] = (byte) (subDeviceNumber>>24&0xff);
+        d.mData[7] = (byte) (subDeviceNumber>>16&0xff);
+        d.mData[8] = (byte) (subDeviceNumber>>8&0xff);
+        d.mData[9] = (byte) (subDeviceNumber&0xff);
+        d.mData[10]= 0;
+        d.mData[11]=0;
+        d.mData[12]=0;
+        if(!SendRequest((short)0x0001,(byte)0x03,user.getmSession(),(short)13,d))
+            return -1;
+        return d.mData[10];
+    }
+
 
     class RequestData{
         public byte[] mData;

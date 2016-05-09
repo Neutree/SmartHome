@@ -73,6 +73,8 @@ public class ToUser {
 		*///不使用随机数+时间戳，采用
 		//响应用户的登录消息，dao.VerifyUser(user)里面会添加sessionToken
 		SendToUserSignInResult(user,result);
+		if(result>0)
+			Session.setAttribute(user.getSession(), user.getmName());
 		return result;
 	}
 	

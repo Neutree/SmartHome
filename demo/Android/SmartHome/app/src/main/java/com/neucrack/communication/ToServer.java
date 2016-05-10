@@ -138,7 +138,7 @@ public class ToServer {
         d.mData[13]=0;
         if(!SendRequest((short)0x0002,(byte)0x03,user.getmSession(),(short)14,d))
             return -1;
-        return 1;
+        return d.mData[11];
     }
 
     public int GetSwitchStatus(String deviceName, int subDeviceNumber) {

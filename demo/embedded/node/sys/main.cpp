@@ -25,8 +25,7 @@ main(int argc, char* argv[])
 	{
 		//光强传感器值，大概范围0~300
 		lightSensor.Converted();
-		app.mLightSensor = lightSensor.mConvertedVoltage[0]*100;
-		
+		app.mLightSensor = lightSensor.mConvertedVoltage[3]*100;
 		//循环 
 		app.loop();
 	}

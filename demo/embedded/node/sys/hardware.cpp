@@ -18,8 +18,8 @@ USART com1(1,115200,true);
 
 
 //light sensor
-ADC adc(1);
-Voltage lightSensor(adc.mAdcPrimordialValue,1);//光强传感器
+ADC adc(1,6,8,9);
+Voltage lightSensor(adc.mAdcPrimordialValue,4);//光强传感器
 
 
 //wifi

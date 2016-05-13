@@ -68,16 +68,56 @@
             android:textColor="@android:color/white" />
 
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="火焰"
+            android:id="@+id/_fireSensor"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@android:color/holo_red_light"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="烟雾"
+            android:id="@+id/_smokeSensor"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@android:color/holo_red_light"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="门"
+            android:id="@+id/_door"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@android:color/holo_red_light"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="更新状态"
+            android:id="@+id/_updateStatus"
+            android:layout_row="2"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@android:color/holo_blue_dark"
+            android:textColor="@android:color/white" />
+
     </GridLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="更新状态"
-        android:id="@+id/_updateStatus"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="58dp"
-        android:background="@android:color/holo_blue_dark"
-        android:textColor="@android:color/white" />
+
     </RelativeLayout>
 </RelativeLayout>

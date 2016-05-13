@@ -41,7 +41,8 @@ public class Home extends AppCompatActivity
         Button room1 = (Button)findViewById(R.id._room1);
         Button room2 = (Button)findViewById(R.id._room2);
         Button room3 = (Button)findViewById(R.id._room3);
-
+        Button kitchen = (Button)findViewById(R.id._kitchen);
+        Button door = (Button)findViewById(R.id._door);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -77,6 +78,26 @@ public class Home extends AppCompatActivity
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putCharSequence("deviceName","1:2:3:4:5:8");
+                Intent intent = new Intent(Home.this, subDevices.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        kitchen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence("deviceName","1:2:3:4:5:9");
+                Intent intent = new Intent(Home.this, subDevices.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        door.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence("deviceName","1:2:3:4:5:10");
                 Intent intent = new Intent(Home.this, subDevices.class);
                 intent.putExtras(bundle);
                 startActivity(intent);

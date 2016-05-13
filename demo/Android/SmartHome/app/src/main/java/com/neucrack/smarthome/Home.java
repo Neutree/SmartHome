@@ -97,7 +97,7 @@ public class Home extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putCharSequence("deviceName","1:2:3:4:5:10");
+                bundle.putCharSequence("deviceName","1:2:3:4:5:a");
                 Intent intent = new Intent(Home.this, subDevices.class);
                 intent.putExtras(bundle);
                 startActivity(intent);

@@ -68,7 +68,7 @@ public class subDevices extends AppCompatActivity {
             lightSensor.setVisibility(View.GONE);
             door.setVisibility(View.GONE);
         }
-        else if(deviceName.equals("1:2:3:4:5:10")){
+        else if(deviceName.equals("1:2:3:4:5:a")){
             smokeSensor.setVisibility(View.GONE);
             light.setVisibility(View.GONE);
             curtain.setVisibility(View.GONE);
@@ -130,7 +130,8 @@ public class subDevices extends AppCompatActivity {
                     new Thread(GetFireSensor).start();
                     new Thread(GetSmokeSensor).start();
                 }
-                else if(deviceName.equals("1:2:3:4:5:10")){//门
+                else if(deviceName.equals("1:2:3:4:5:a")){//门
+                    showProgress(true);
                     new Thread(GetDoor).start();
                 }
                 else {
@@ -161,16 +162,18 @@ public class subDevices extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showProgress(true);
-                new Thread(GetDoor).start();
+                new Thread(SetDoor).start();
             }
         });
 
         if(deviceName.equals("1:2:3:4:5:9")){//厨房
+            showProgress(true);
             new Thread(GetFireSensor).start();
             new Thread(GetSmokeSensor).start();
         }
-        else if(deviceName.equals("1:2:3:4:5:10")){//门
-
+        else if(deviceName.equals("1:2:3:4:5:a")){//门
+            showProgress(true);
+            new Thread(GetDoor).start();
         }
         else {
             // 开启一个子线程，进行网络操作，等待有返回结果，使用handler通知UI(socket通信必须不在UI线程下进行，以免失去响应)
@@ -240,6 +243,45 @@ public class subDevices extends AppCompatActivity {
             showProgress(false);
         }
     };
+
+    Handler SetDoorHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            boolean result = data.getBoolean("result",false);
+            if ( result) {
+                doorOn = !doorOn;
+                if (doorOn)
+                    door.setBackgroundColor(0xFF2EBD5F);
+                else
+                    door.setBackgroundColor(0xffff4444);
+                Toast.makeText(getApplicationContext(), "门控制成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "门控制失败！！", Toast.LENGTH_SHORT).show();
+            }
+            showProgress(false);
+        }
+    };
+
+    /**
+     * 网络操作相关的子线程
+     */
+    Runnable SetDoor = new Runnable() {
+
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+            boolean result =toServer.SetSwitch(deviceName,1,(!doorOn));
+            Message msg = new Message();
+            Bundle data = new Bundle();
+            data.putBoolean("result", result);
+            msg.setData(data);
+            SetDoorHandler.sendMessage(msg);
+        }
+    };
+
 
     /**
      * 网络操作相关的子线程

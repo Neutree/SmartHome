@@ -9,8 +9,9 @@ public class StringRelated {
 	        		+((short)c[3]&0xff)+":"+Integer.toHexString(((int)c[4]&0xff))+":"+Integer.toHexString(((int)c[5]&0xff)); 
 	 }
 	 public static String Byte6ToMac(byte[] c,int startIndex) {
-	        return Integer.toHexString(((int)c[0+startIndex]&0xff))+":"+Integer.toHexString(((int)c[1+startIndex]&0xff))+":"+Integer.toHexString(((int)c[2+startIndex]&0xff))+":"
-	        		+((short)c[3+startIndex]&0xff)+":"+Integer.toHexString(((int)c[4+startIndex]&0xff))+":"+Integer.toHexString(((int)c[5+startIndex]&0xff)); 
+		 String result =Integer.toHexString(((int)c[0+startIndex]&0xff))+":"+Integer.toHexString(((int)c[1+startIndex]&0xff))+":"+Integer.toHexString(((int)c[2+startIndex]&0xff))+":"
+	        		+((short)c[3+startIndex]&0xff)+":"+Integer.toHexString(((int)c[4+startIndex]&0xff))+":"+Integer.toHexString( (((int)c[5+startIndex])&0xff) );
+	        return result;
 	 }
 	 
 	 

@@ -71,9 +71,13 @@ new SubDevice(DeviceSensor.DEVICE_TYPE,(long) 1, StringRelated.newString_UTF_8("
 	new SubDevice(DeviceSensor.DEVICE_TYPE,(long) 1, StringRelated.newString_UTF_8("火焰传感器"), new DeviceSensor()),
 	new SubDevice(DeviceSensor.DEVICE_TYPE,(long) 2, StringRelated.newString_UTF_8("烟雾感器"), new DeviceSensor()));
 				System.out.println(dao.AddDevice(device, user));
+		
+		//创建门设备
+		device = new Device("1:2:3:4:5:a", "15023490062", StringRelated.newString_UTF_8("门"), StringRelated.newString_UTF_8("门"),
+	new SubDevice(DeviceSensor.DEVICE_TYPE,(long) 1, StringRelated.newString_UTF_8("门"), new DeviceSensor()));
+				System.out.println(dao.AddDevice(device, user));
 		*/
-		
-		
+
 	}
 	
 

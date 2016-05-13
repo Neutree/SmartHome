@@ -145,7 +145,8 @@ public class DAOHelper {
 				 return  null;
 			 name = (String) jsonObject.get("userName");
 		} catch (JSONException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("数据库中没有该设备的信息哦，第一次使用该设备请先添加哦~~");
 			return null;
 		}
 		

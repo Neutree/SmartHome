@@ -158,7 +158,7 @@ public class ToServer {
         d.mData[12]=0;
         if(!SendRequest((short)0x0001,(byte)0x03,user.getmSession(),(short)13,d))
             return -1;
-        return d.mData[11];
+        return d.mData[10];
     }
 
 

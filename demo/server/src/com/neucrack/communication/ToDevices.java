@@ -34,7 +34,7 @@ public class ToDevices {
 				int datalength = (short)dataToRead[17]<<8|dataToRead[18];
 				//CRC校验
 				int parity = CRC.CRC16Calculate(dataToRead,datalength+19);
-				int parity2 = (dataToRead[19+datalength]<<8|dataToRead[20+datalength])&0xffff;
+				int parity2 = ((int)dataToRead[19+datalength]<<8&0xff00|dataToRead[20+datalength]&0xff)&0xffff;
 				if(parity != parity2)
 					return false;
 				//校验成功
@@ -373,6 +373,7 @@ public class ToDevices {
 						)//不是是响应信息或者不是该传感器信息
 					return false;
 				sensor.value = (int)(data[24]&0xff);//传感器数值
+				
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

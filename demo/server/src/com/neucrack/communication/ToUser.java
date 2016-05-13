@@ -217,11 +217,11 @@ public class ToUser {
 		//验证通过，使用ToDevices进行状态查询
 		boolean result=false;
 		int value = 0;
-		if(switchName == 1){//光传感器
+//		if(switchName == 1){//传感器
 			Sensor sensor = new Sensor();			
 			result = toDevice.GetSensorData(device, switchName, sensor);
 			value = sensor.value;
-		}
+//		}
 		if(!result)
 			return false;
 		byte deviceBytes[] = StringRelated.MacToBytes(device);

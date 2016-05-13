@@ -76,7 +76,7 @@ public class ServerHost {
 	public static void showInfo(Socket socket) {
 		System.out.println("已连接设备数量：" + mSocketList.size());
 		InetAddress address = socket.getInetAddress();
-		System.out.println("新增网关IP地址：" + address.getHostAddress());
+		System.out.println("新增设备IP地址：" + address.getHostAddress());
 	}
 	public static void DeleteOfflineDevices(){
 		for (int i = 0;i<mSocketList.size();++i) {

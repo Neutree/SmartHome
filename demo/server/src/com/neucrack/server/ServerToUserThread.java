@@ -157,6 +157,9 @@ public class ServerToUserThread extends Thread {
 						case DeviceSensor.DEVICE_TYPE:
 							if(!mToUser.QuerySensor(toDevice,user,device,switchName))
 								System.out.println("查询传感器状态失败");
+							else {
+								System.out.println("查询传感器状态成功");
+							}
 							break;
 						case DeviceDoor.DEVICE_TYPE:
 							System.out.println("请使用查询开关的命令代替");

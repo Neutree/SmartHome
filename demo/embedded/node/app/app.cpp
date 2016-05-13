@@ -87,7 +87,7 @@ void App::WifiInit()
 //	wifi.SetApParam(mApSetName,mApSetPasswd,esp8266::esp8266_PATTERN_DEF);//设置热点信息
 //	wifi.JoinAP(mApJoinName,mApJoinPasswd,esp8266::esp8266_PATTERN_DEF);//加入AP
 	
-	if(!wifi.Connect((char*)"192.168.155.1",8090,Socket_Type_Stream,Socket_Protocol_IPV4))
+	if(!wifi.Connect((char*)"192.168.191.1",8090,Socket_Type_Stream,Socket_Protocol_IPV4))
 	{
 		com1<<"connect server fail!\n\n\n";
 		light.Blink(4,300);

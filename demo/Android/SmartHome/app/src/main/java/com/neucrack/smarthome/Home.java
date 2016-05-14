@@ -2,6 +2,8 @@ package com.neucrack.smarthome;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -25,6 +27,8 @@ import com.neucrack.entity.User;
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     NavigationView mNavigationView = null;
+    private ToServer mToServer=null;
+    private User mUser = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,8 +116,8 @@ public class Home extends AppCompatActivity
             }
         });
 
-
-
+        mToServer = new ToServer(this);
+        mUser = PreferenceData.GetUserInfo(this);
 
         Init();
 
@@ -177,16 +181,43 @@ public class Home extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     public void Init(){
-        ToServer toServer = new ToServer();
-        User user = PreferenceData.GetUserInfo();
-        if(user!=null) {
-            if (!toServer.SignIn(user)) {
-                Toast.makeText(getApplicationContext(), "无法登录，请检查网络", Toast.LENGTH_SHORT).show();
-                PreferenceData.mIsSignedIn = false;
-            }
-            else
-                PreferenceData.mIsSignedIn = true;
+        if(mUser!=null) {
+            new Thread(SignIn).start();
         }
     }
+
+    Handler SignInHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            boolean result = data.getBoolean("result",false);
+            if ( result) {
+                Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "登录失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    /**
+     * 网络操作相关的子线程
+     */
+    Runnable SignIn = new Runnable() {
+
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+            boolean result = mToServer.SignIn(mUser);
+            Message msg = new Message();
+            Bundle data = new Bundle();
+            data.putBoolean("result", result);
+            msg.setData(data);
+            SignInHandler.sendMessage(msg);
+        }
+    };
+
 }

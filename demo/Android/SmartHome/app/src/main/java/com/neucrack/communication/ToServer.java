@@ -1,5 +1,7 @@
 package com.neucrack.communication;
 
+import android.content.Context;
+
 import com.neucrack.entity.PreferenceData;
 import com.neucrack.entity.ServerInfo;
 import com.neucrack.entity.User;
@@ -14,8 +16,12 @@ import java.net.Socket;
  * Created by neucrack on 2016-05-09.
  */
 public class ToServer {
-
+    Context mContext;
+    public ToServer(Context context){
+        mContext = context;
+    }
     public boolean SignIn(User user){
+        user.setmSession("");
         if(user==null||user.getmPasswd()==null||user.getmPasswd().equals(""))
             return false;
         RequestData d = new RequestData();
@@ -32,7 +38,6 @@ public class ToServer {
             return false;
         String sessionString = StringRelated.SessionTokenBytes32ToString(d.mSession);
         user.setmSession(sessionString);
-        PreferenceData.SaveUserInfo(user);
         return true;
     }
 
@@ -101,7 +106,7 @@ public class ToServer {
     }
 
     public boolean SetSwitch(String deviceName, int subDeviceNumber, boolean isOn) {
-        User user = PreferenceData.GetUserInfo();
+        User user = PreferenceData.GetUserInfo(mContext);
         if(user==null)
             return false;
         RequestData d = new RequestData();
@@ -121,7 +126,7 @@ public class ToServer {
     }
 
     public long GetSensor(String deviceName, int subDeviceNumber) {
-        User user = PreferenceData.GetUserInfo();
+        User user = PreferenceData.GetUserInfo(mContext);
         if(user==null)
             return -1;
         RequestData d = new RequestData();
@@ -142,7 +147,7 @@ public class ToServer {
     }
 
     public int GetSwitchStatus(String deviceName, int subDeviceNumber) {
-        User user = PreferenceData.GetUserInfo();
+        User user = PreferenceData.GetUserInfo(mContext);
         if(user==null)
             return -1;
         RequestData d = new RequestData();

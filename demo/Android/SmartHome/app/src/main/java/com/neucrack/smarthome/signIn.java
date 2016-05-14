@@ -38,6 +38,7 @@ import com.neucrack.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,6 +67,8 @@ public class signIn extends AppCompatActivity implements LoaderCallbacks<Cursor>
     private View mLoginFormView;
     private boolean mIsRememberUser;
     private CheckBox mIsRememberUserCheckBox;
+    private User mUser;
+    ToServer mToServer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,12 +102,14 @@ public class signIn extends AppCompatActivity implements LoaderCallbacks<Cursor>
         mProgressView = findViewById(R.id.login_progress);
         mIsRememberUserCheckBox = (CheckBox) findViewById(R.id._rememberUser);
 
-        if(PreferenceData.GetIsRememberUser()){
-            mPhonelView.setText(PreferenceData.GetUserInfo().getmName());
-            mPasswordView.setText(PreferenceData.GetUserInfo().getmPasswd());
-        }
-        if(PreferenceData.GetIsRememberUser())
+        mToServer = new ToServer(this);
+
+        if(PreferenceData.GetIsRememberUser(this)){
+            mPhonelView.setText(PreferenceData.GetUserInfo(this).getmName());
+            mPasswordView.setText(PreferenceData.GetUserInfo(this).getmPasswd());
             mIsRememberUserCheckBox.setChecked(true);
+        }
+
     }
 
     private void populateAutoComplete() {
@@ -205,7 +210,21 @@ public class signIn extends AppCompatActivity implements LoaderCallbacks<Cursor>
             }
             showProgress(true);
             mAuthTask = new UserLoginTask(phone, password);
-            mAuthTask.execute((Void) null);
+            try {
+                boolean result =mAuthTask.execute((Void) null).get();
+                if(result){
+                    PreferenceData.SaveUserInfo(this,mUser);
+                    if(mIsRememberUserCheckBox.isChecked())
+                        PreferenceData.SaveIsRememberUser(this,true);
+                    else
+                        PreferenceData.SaveIsRememberUser(this,false);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -344,14 +363,11 @@ public class signIn extends AppCompatActivity implements LoaderCallbacks<Cursor>
             Log.v("debug","开始登录");
             boolean result = false;
 
-            // Simulate network access.
-            ToServer toServer = new ToServer();
-            if(toServer.SignIn(new User(mPhone,mPassword,"","")))
+            mUser = new User(mPhone,mPassword,"","");
+            if(mToServer.SignIn(mUser) )
                 result = true;//登录成功
-            else if(toServer.SignUp(new User(mPhone,mPassword,"","")))
+            else if(mToServer.SignUp(mUser))
                 result = true;//注册成功
-            if(result)
-                PreferenceData.SaveIsRememberUser(mIsRememberUser);
             if(result) {
                 Log.v("debug", "登录成功");
                 PreferenceData.mIsSignedIn = true;

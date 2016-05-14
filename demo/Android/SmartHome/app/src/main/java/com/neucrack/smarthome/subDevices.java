@@ -81,7 +81,7 @@ public class subDevices extends AppCompatActivity {
             door.setVisibility(View.GONE);
         }
 
-        toServer = new ToServer();
+        toServer = new ToServer(this);
 
 
 

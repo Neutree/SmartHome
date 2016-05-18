@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="卧室1"
             android:id="@+id/_room1"
-            android:background="@color/colorAccent"
+            android:background="@color/design_textinput_error_color_dark"
             android:layout_columnWeight="1"
             android:textColor="@android:color/white"
             android:layout_row="0"

@@ -149,9 +149,9 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -165,11 +165,13 @@ public class Home extends AppCompatActivity
             // Handle the camera action
             Intent intent = new Intent(Home.this,signIn.class);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_smart) {
+            Intent intent = new Intent(Home.this,Smart.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(Home.this,Settings.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_tools) {
 
         } else if (id == R.id.nav_share) {
 

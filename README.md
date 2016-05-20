@@ -1,5 +1,7 @@
 SmartHome
 ============
+
+[![Join the chat at https://gitter.im/Neutree/SmartHome](https://badges.gitter.im/Neutree/SmartHome.svg)](https://gitter.im/Neutree/SmartHome?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
  
 简单的智能家居demo
  

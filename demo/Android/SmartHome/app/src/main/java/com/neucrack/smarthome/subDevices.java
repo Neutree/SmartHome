@@ -292,7 +292,7 @@ public class subDevices extends AppCompatActivity {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
-            boolean result = toServer.SetSwitch(deviceName,2,!lightOn);
+            boolean result = toServer.SetSwitch(deviceName,2,!curtainOn);
             try {
                 Thread.sleep(6000);
             } catch (InterruptedException e) {

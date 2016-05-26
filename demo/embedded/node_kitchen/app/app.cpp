@@ -42,10 +42,12 @@ void App::Init()
 	
 	com1<<"initialize complete!\n";
 }
-
+char sensorNumber1[]={0,0,0,1};
+char sensorNumber2[]={0,0,0,2};
 void App::loop()
 {
 	static float time;
+	
 	if(TaskManager::Time()-time>=20)
 	{
 		time = TaskManager::Time();
@@ -61,8 +63,21 @@ void App::loop()
 //		com1<<"connection to server error!\n";
 	
 	
+	
 	//接收来自服务器的数据
 	ReceiveAndDeal();
+	
+	//检测数据是否正常，如果不正常，向服务器发送状态信息
+//	if(mFireSensor<13)
+//	{
+////		sensorNumber[3] = 1;
+//		SendSensorInfoToServer(sensorNumber1,mSmokeSensor);
+//	}
+//	if(mSmokeSensor>50)
+//	{
+////		sensorNumber[3] = 2;
+//		SendSensorInfoToServer(sensorNumber2,mSmokeSensor);
+//	}
 }
 
 void App::WifiInit()

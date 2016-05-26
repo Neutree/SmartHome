@@ -3,7 +3,7 @@
 
 
 
-//step motor
+//步进电机
 GPIO motor_gpioa(GPIOB,6),motor_gpiob(GPIOB,7),motor_gpioc(GPIOB,8),motor_gpiod(GPIOB,9);
 StepMotor stepMotor(motor_gpioa,motor_gpiob,motor_gpioc,motor_gpiod);
 Timer timer(TIM2,0,1,0);//定时器2,1ms中断一次

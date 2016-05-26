@@ -97,6 +97,7 @@ public class ServerToDeviceThead extends Thread {
 					System.out.println("心跳保持失败");
 					if(!mToDevices.KeepAlive(mSignInfo.device)){
 						System.out.println("第二次心跳保持失败!失去连接！！！！！！");
+						ServerHost.DeleteOfflineDevices();//删除掉已经掉线了的设备
 						Close();
 						break;
 					}

@@ -134,7 +134,7 @@ public class ServerToUserThread extends Thread {
 							if(!mToUser.ControlSwitch(toDevice,user,device,switchName,(dataToRead[55]==1)))
 								System.out.println("控制开关失败");
 							else {
-								System.out.println("控制开关成功");
+								System.out.println("控制开关成功"+dataToRead[55]);
 							}
 							mSocket.setSoTimeout(timeout);
 							break;

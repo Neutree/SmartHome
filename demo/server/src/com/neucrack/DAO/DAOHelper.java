@@ -16,7 +16,7 @@ import com.neucrack.server.HttpRequest;
 public class DAOHelper {
 	
 	/**
-	 * 
+	 * 查找用户，也是用户登录过程
 	 * @param user 要查找的用户呢
 	 * @return 1:成功  0：没有该用户   <0:发生错误
 	 */

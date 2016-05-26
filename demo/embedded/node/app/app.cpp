@@ -34,7 +34,7 @@ void App::Init()
 {
 	//关闭LED
 	light.Off();
-	//步进电机使能
+	//步进电机失能
 	stepMotor.Disable();
 	//设置步进电机速度，值越小速度越大
 	stepMotor.Run(true,2);
@@ -82,11 +82,12 @@ void App::WifiInit()
 	else
 		com1<<"wifi is healthy\n";
 	wifi.SetEcho(false);//关闭回响
-//	wifi.SetMode(esp8266::esp8266_MODE_STATION_AP,esp8266::esp8266_PATTERN_DEF);//设置为station+ap模式
+	wifi.SetMode(esp8266::esp8266_MODE_STATION_AP,esp8266::esp8266_PATTERN_DEF);//设置为station+ap模式
 	wifi.SetMUX(false);//单连接模式
-//	wifi.SetApParam(mApSetName,mApSetPasswd,esp8266::esp8266_PATTERN_DEF);//设置热点信息
-//	wifi.JoinAP(mApJoinName,mApJoinPasswd,esp8266::esp8266_PATTERN_DEF);//加入AP
+	wifi.SetApParam(mApSetName,mApSetPasswd,esp8266::esp8266_PATTERN_DEF);//设置热点信息
+	wifi.JoinAP(mApJoinName,mApJoinPasswd,esp8266::esp8266_PATTERN_DEF);//加入AP
 	
+	//连接服务器
 	if(!wifi.Connect((char*)"192.168.191.1",8090,Socket_Type_Stream,Socket_Protocol_IPV4))
 	{
 		com1<<"connect server fail!\n\n\n";
@@ -148,15 +149,18 @@ void App::ReceiveAndDeal()
 	static unsigned short size=0;
 	if(com2.ReceiveBufferSize()>5)
 	{
+		//从wifi缓冲区读取数据
 		size = wifi.Read(mDataTemp);
 		if(size>0)
 		{
 			void* data;
 			static Protocol::OperationType operationType;
+			//解析服务器发送过来的消息类型
 			short dataType = Decode(&data,&operationType);
 			com1<<"type:"<<dataType<<"\n";
 			if(dataType == Protocol::Switch::dataType)
 			{
+				//控制开关请求
 				if(operationType == Protocol::OperationType_Control)
 				{
 					if(*((Protocol::Switch*)data)->comment == 1)//灯光
@@ -171,7 +175,7 @@ void App::ReceiveAndDeal()
 							light.On();
 							mLightOn = true;
 						}
-						SendLightInfoToServer();
+						SendLightInfoToServer();//返回给服务器
 					}
 					else if(*((Protocol::Switch*)data)->comment == 2)//窗帘
 					{
@@ -191,8 +195,8 @@ void App::ReceiveAndDeal()
 						//这个节点没有门锁
 					}
 					
-				}//控制开关请求
-				else if(operationType == Protocol::OperationType_Ask)
+				}
+				else if(operationType == Protocol::OperationType_Ask)//询问开关状态
 				{
 					if(*((Protocol::Switch*)data)->comment == 1)//灯光
 					{
@@ -206,14 +210,14 @@ void App::ReceiveAndDeal()
 					{
 						//这个节点没有门锁
 					}
-				}//询问开关状态
+				}
 			}
 			else if(dataType == Protocol::Sensor::dataType)
 			{
-				if(operationType == Protocol::OperationType_Ask)
+				if(operationType == Protocol::OperationType_Ask)//询问开关状态
 				{
 					SendSensorInfoToServer();
-				}//询问开关状态
+				}
 			}
 			else if(dataType == Protocol::Door::dataType)
 			{/*  
@@ -389,9 +393,9 @@ bool App::Write(Protocol::ToServer &toServer)
 
 bool App::CloseCurtain()
 {
-	stepMotor.SetDirection(true);
+	stepMotor.Run(true,3);
 	stepMotor.Enable();
-	TaskManager::DelayS(5);
+	TaskManager::DelayS(3);
 	stepMotor.Disable();
 	mCurtainOn = false;
 	return true;
@@ -399,9 +403,9 @@ bool App::CloseCurtain()
 
 bool App::OpenCurtain()
 {
-	stepMotor.SetDirection(false);
+	stepMotor.Run(false,3);
 	stepMotor.Enable();
-	TaskManager::DelayS(5);
+	TaskManager::DelayS(3);
 	stepMotor.Disable();
 	mCurtainOn = true;
 	return true;

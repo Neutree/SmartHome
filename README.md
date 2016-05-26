@@ -1,5 +1,7 @@
 SmartHome
 ============
+
+[![Join the chat at https://gitter.im/Neutree/SmartHome](https://badges.gitter.im/Neutree/SmartHome.svg)](https://gitter.im/Neutree/SmartHome?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
  
 简单的智能家居demo
  
@@ -9,6 +11,9 @@ SmartHome
  * 窗帘：手机查看窗帘状态、控制窗帘开关
  * 门禁：手机查看、管理门开关，刷RFID卡开门
  * 安防：离家模式--模拟主人在家的情况
+
+# 交流、反馈
+[![Gitter](https://badges.gitter.im/Neutree/SmartHome.svg)](https://gitter.im/Neutree/SmartHome?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # 硬件
 * 核心：STM32F103C8T6

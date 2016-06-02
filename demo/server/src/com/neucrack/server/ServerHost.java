@@ -59,10 +59,10 @@ public class ServerHost {
 			System.out.println("Server Started，waiting for devices connect at port 8090:");
 			while (true) {// 循环监听等待客户端的连接
 				socket = serverSocket.accept();// 调用accept()方法开始监听，等待客户端的连接
+				DeleteOfflineDevices();//删除掉已经掉线了的设备
 				ServerToDeviceThead serverThread = new ServerToDeviceThead(socket);// 创建一个新的线程响应客户端的连接
 				serverThread.start();// 启动线程
 				mSocketList.add(serverThread);
-				DeleteOfflineDevices();//删除掉已经掉线了的设备
 				showInfo(socket);
 
 			}
@@ -81,7 +81,10 @@ public class ServerHost {
 	public static void DeleteOfflineDevices(){
 		for (int i = 0;i<mSocketList.size();++i) {
 			if(!mSocketList.get(i).IsAlive())//已经关闭连接了，可以移除
-				mSocketList.remove(i);
+				{
+					mSocketList.remove(i);
+					System.out.println("前面掉线过一个设备哦~");
+				}
 		}
 	}
 }

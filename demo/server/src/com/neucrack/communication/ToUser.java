@@ -221,6 +221,7 @@ public class ToUser {
 			Sensor sensor = new Sensor();			
 			result = toDevice.GetSensorData(device, switchName, sensor);
 			value = sensor.value;
+			System.out.println("Öµ£º"+value);
 //		}
 		if(!result)
 			return false;

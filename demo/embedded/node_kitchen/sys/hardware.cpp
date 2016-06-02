@@ -17,8 +17,8 @@ LED light(ledGpio,false);//灯
 USART com1(1,115200,true);
 
 
-//light sensor
-ADC adc(4,5);
+//sensor
+ADC adc(8,9);
 Voltage sensor(adc.mAdcPrimordialValue,2);//传感器
 
 

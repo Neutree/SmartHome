@@ -28,6 +28,8 @@ public class subDevices extends AppCompatActivity {
     ToServer toServer = null;
     String deviceName=null;
 
+    boolean mThreadCanRun = true;
+
     Button light =null;
     Button curtain =null;
     Button lightSensor =null;
@@ -35,6 +37,7 @@ public class subDevices extends AppCompatActivity {
     Button fireSensor =null;
     Button smokeSensor =null;
     Button door =null;
+
 
     private View msubDevicesView =null;
     private View mProgressView = null;
@@ -215,12 +218,15 @@ public class subDevices extends AppCompatActivity {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
+            while(!mThreadCanRun);//等待其它正在进行的操作完成
+            mThreadCanRun = false;
             boolean result =toServer.SetSwitch(deviceName,1,(!lightOn));
             Message msg = new Message();
             Bundle data = new Bundle();
             data.putBoolean("result", result);
             msg.setData(data);
             SetLightHandler.sendMessage(msg);
+            mThreadCanRun = true;
         }
     };
     Handler SetCurrainHandler = new Handler() {
@@ -273,12 +279,15 @@ public class subDevices extends AppCompatActivity {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
+            while(!mThreadCanRun);//等待其它正在进行的操作完成
+            mThreadCanRun = false;
             boolean result =toServer.SetSwitch(deviceName,1,(!doorOn));
             Message msg = new Message();
             Bundle data = new Bundle();
             data.putBoolean("result", result);
             msg.setData(data);
             SetDoorHandler.sendMessage(msg);
+            mThreadCanRun = true;
         }
     };
 
@@ -292,6 +301,8 @@ public class subDevices extends AppCompatActivity {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
+            while(!mThreadCanRun);//等待其它正在进行的操作完成
+            mThreadCanRun = false;
             boolean result = toServer.SetSwitch(deviceName,2,!curtainOn);
             try {
                 Thread.sleep(6000);
@@ -303,6 +314,7 @@ public class subDevices extends AppCompatActivity {
             data.putBoolean("result", result);
             msg.setData(data);
             SetCurrainHandler.sendMessage(msg);
+            mThreadCanRun = true;
         }
     };
 
@@ -336,6 +348,8 @@ public class subDevices extends AppCompatActivity {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
+            while(!mThreadCanRun);//等待其它正在进行的操作完成
+            mThreadCanRun = false;
             int result =toServer.GetSwitchStatus(deviceName,1);
             Message msg = new Message();
             Bundle data = new Bundle();
@@ -343,6 +357,7 @@ public class subDevices extends AppCompatActivity {
             data.putBoolean("value",result>0);
             msg.setData(data);
             GetLightHandler.sendMessage(msg);
+            mThreadCanRun = true;
         }
     };
     Handler GetCurrainHandler = new Handler() {
@@ -375,6 +390,8 @@ public class subDevices extends AppCompatActivity {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
+            while(!mThreadCanRun);//等待其它正在进行的操作完成
+            mThreadCanRun = false;
             int result =toServer.GetSwitchStatus(deviceName,2);
             Message msg = new Message();
             Bundle data = new Bundle();
@@ -382,6 +399,7 @@ public class subDevices extends AppCompatActivity {
             data.putBoolean("value",result>0);
             msg.setData(data);
             GetCurrainHandler.sendMessage(msg);
+            mThreadCanRun = true;
         }
     };
 
@@ -416,6 +434,8 @@ public class subDevices extends AppCompatActivity {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
+            while(!mThreadCanRun);//等待其它正在进行的操作完成
+            mThreadCanRun = false;
             int result =toServer.GetSwitchStatus(deviceName,1);
             Message msg = new Message();
             Bundle data = new Bundle();
@@ -423,6 +443,7 @@ public class subDevices extends AppCompatActivity {
             data.putBoolean("value",result>0);
             msg.setData(data);
             GetDoorHandler.sendMessage(msg);
+            mThreadCanRun = true;
         }
     };
 
@@ -455,6 +476,8 @@ public class subDevices extends AppCompatActivity {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
+            while(!mThreadCanRun);//等待其它正在进行的操作完成
+            mThreadCanRun = false;
             long result =toServer.GetSensor(deviceName,1);
             Message msg = new Message();
             Bundle data = new Bundle();
@@ -462,6 +485,7 @@ public class subDevices extends AppCompatActivity {
             data.putLong("value",result);
             msg.setData(data);
             GetSensorHandler.sendMessage(msg);
+            mThreadCanRun = true;
         }
     };
 
@@ -493,6 +517,8 @@ public class subDevices extends AppCompatActivity {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
+            while(!mThreadCanRun);//等待其它正在进行的操作完成
+            mThreadCanRun = false;
             long result =toServer.GetSensor(deviceName,1);
             Message msg = new Message();
             Bundle data = new Bundle();
@@ -500,6 +526,7 @@ public class subDevices extends AppCompatActivity {
             data.putLong("value",result);
             msg.setData(data);
             GetFireSensorHandler.sendMessage(msg);
+            mThreadCanRun = true;
         }
     };
 
@@ -533,6 +560,8 @@ public class subDevices extends AppCompatActivity {
         public void run() {
             // TODO
             // 在这里进行 http request.网络请求相关操作
+            while(!mThreadCanRun);//等待其它正在进行的操作完成
+            mThreadCanRun = false;
             long result =toServer.GetSensor(deviceName,2);
             Message msg = new Message();
             Bundle data = new Bundle();
@@ -540,6 +569,7 @@ public class subDevices extends AppCompatActivity {
             data.putLong("value",result);
             msg.setData(data);
             GetSmokeSensorHandler.sendMessage(msg);
+            mThreadCanRun = true;
         }
     };
 

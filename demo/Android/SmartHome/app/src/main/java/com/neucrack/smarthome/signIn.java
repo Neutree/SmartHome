@@ -202,13 +202,14 @@ public class signIn extends AppCompatActivity implements LoaderCallbacks<Cursor>
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            showProgress(true);
             if(mIsRememberUserCheckBox.isChecked()) {
                 mIsRememberUser = true;
             }
             else {
                 mIsRememberUser = false;
             }
-            showProgress(true);
+
             mAuthTask = new UserLoginTask(phone, password);
             try {
                 boolean result =mAuthTask.execute((Void) null).get();

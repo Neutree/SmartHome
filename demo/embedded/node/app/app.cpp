@@ -82,9 +82,9 @@ void App::WifiInit()
 	else
 		com1<<"wifi is healthy\n";
 	wifi.SetEcho(false);//关闭回响
-	wifi.SetMode(esp8266::esp8266_MODE_STATION_AP,esp8266::esp8266_PATTERN_DEF);//设置为station+ap模式
+	wifi.SetMode(esp8266::esp8266_MODE_STATION,esp8266::esp8266_PATTERN_DEF);//设置为station+ap模式
 	wifi.SetMUX(false);//单连接模式
-	wifi.SetApParam(mApSetName,mApSetPasswd,esp8266::esp8266_PATTERN_DEF);//设置热点信息
+	//wifi.SetApParam(mApSetName,mApSetPasswd,esp8266::esp8266_PATTERN_DEF);//设置热点信息
 	wifi.JoinAP(mApJoinName,mApJoinPasswd,esp8266::esp8266_PATTERN_DEF);//加入AP
 	
 	//连接服务器

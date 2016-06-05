@@ -16,8 +16,8 @@
             android:title="Setting" />
         <item
             android:id="@+id/nav_tools"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:icon="@drawable/shoping"
+            android:title="Shopping" />
     </group>
 
     <item android:title="Communicate">
@@ -29,7 +29,7 @@
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Contact us" />
         </menu>
     </item>
 

@@ -87,7 +87,7 @@ public:
 	///@param USART	 选择串口编号 1-3 ,对应的引脚请看下面重映射处        default:1
 	///@param baud -串口的波特率              default:9600
 	///@param useDMA  true:if you want to send data by DMA false:don't use dma to send data
-	///@param remap -if remap 0x00:no remap  0x01:half remap 0x11:remap  default:0x00 . which pin @see USART_Pin_Table at the bottom of this file
+	///@param remap 重映射 -if remap 0x00:no remap  0x01:half remap 0x11:remap  default:0x00 . which pin @see USART_Pin_Table at the bottom of this file
 	///@param Prioritygroup -中断优先级分组   default:3  优先级分组详情请看文件末尾
 	///@param preemprionPriority -抢占优先级  default:7  优先级分组详情请看文件末尾
 	///@param subPriority -响应优先级         default:1  优先级分组详情请看文件末尾

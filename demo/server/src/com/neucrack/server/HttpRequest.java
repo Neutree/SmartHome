@@ -59,8 +59,7 @@ public class HttpRequest {
                 result += line;
             }
         } catch (Exception e) {
-            System.out.println("发送GET请求出现异常！" + e);
-            e.printStackTrace();
+            System.out.println(e+"  "+"发送GET请求出现异常！请检查网络连接");
             result = null;
         }
         // 使用finally块来关闭输入流

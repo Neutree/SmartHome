@@ -417,6 +417,11 @@
           <GroupName>lib/hal</GroupName>
           <Files>
             <File>
+              <FileName>Interrupt.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\sys\Interrupt.cpp</FilePath>
+            </File>
+            <File>
               <FileName>F103_ADC_S.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\lib\src\F103_ADC_S.cpp</FilePath>
@@ -515,11 +520,6 @@
               <FileName>hardware.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\sys\hardware.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Interrupt.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\sys\Interrupt.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -941,6 +941,11 @@
           <GroupName>lib/hal</GroupName>
           <Files>
             <File>
+              <FileName>Interrupt.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\sys\Interrupt.cpp</FilePath>
+            </File>
+            <File>
               <FileName>F103_ADC_S.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\lib\src\F103_ADC_S.cpp</FilePath>
@@ -1039,11 +1044,6 @@
               <FileName>hardware.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\sys\hardware.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Interrupt.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\sys\Interrupt.cpp</FilePath>
             </File>
           </Files>
         </Group>

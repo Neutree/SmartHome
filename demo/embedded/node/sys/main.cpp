@@ -1,10 +1,3 @@
-/**
-  *main.cpp
-  *
-  *@author neucrack
-  *@date 2016-04-21
-  *
-  */
 
 #include "hardware.h"
 #include "app.h"
@@ -18,14 +11,19 @@ void Timer2_IRQ();
 int
 main(int argc, char* argv[])
 {
+	TaskManager::DelayS(3);
+	//系统初始化
 	app.Init();
+	//开启定时器
 	timer.Start();
-	// Infinite loop
+	//循环体
 	while (1)
 	{
-		//光强传感器值，大概范围0~300
+		//将光传感器的值采集出来并且放到app对象的变量中
 		lightSensor.Converted();//ADC转换
 		app.mLightSensor = lightSensor.mConvertedVoltage[3]*100;//获取光感值
+		
+		
 		//循环 
 		app.loop();
 	}

@@ -1,10 +1,4 @@
-/**
-  *main.cpp
-  *
-  *@author neucrack
-  *@date 2016-04-21
-  *
-  */
+
 
 #include "hardware.h"
 #include "app.h"
@@ -17,6 +11,7 @@ App app;
 int
 main(int argc, char* argv[])
 {
+	TaskManager::DelayS(3);
 	app.Init();
 	// Infinite loop
 	while (1)

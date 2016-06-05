@@ -24,12 +24,13 @@ mUserName("15023490062"),mUserPasswd("1208077207")
 	
 }
 
+//定时器中断处理程序，定时切换输出到步进电机的电平，以达到驱动步进电机旋转的目的
 void App::TimerInterrupt()
 {
 	stepMotor.MotorConfig();
 }
 
-
+//系统初始化
 void App::Init()
 {
 	//关闭LED
@@ -40,8 +41,9 @@ void App::Init()
 	stepMotor.Run(true,2);
 	//初始化wifi
 	WifiInit();
-	
-	TaskManager::DelayS(5);
+	//延时5s
+	TaskManager::DelayS(3);
+	//登录到服务器
 	if(!SignIn())
 		com1<<"sign in fail!!!!!!!!!!!!\n\n\n";
 	
@@ -50,26 +52,23 @@ void App::Init()
 
 void App::loop()
 {
-	static float time;
-	if(TaskManager::Time()-time>=20)
-	{
-		time = TaskManager::Time();
-		com1<<".";
-	}
+
 	//硬件健康状态检查
 	if(!CheckHardware())
 		com1<<"haredware error!\n";
 
 	
 	//连接状态检查
-//	if(!CheckConnectionToServer())
-//		com1<<"connection to server error!\n";
-	
+	if(!CheckConnectionToServer()){
+		com1<<"connection to server error!\n";
+		Init();
+	}
 	
 	//接收来自服务器的数据
 	ReceiveAndDeal();
 }
 
+//wifi初始化
 void App::WifiInit()
 {
 	//WIFI initialize
@@ -81,12 +80,13 @@ void App::WifiInit()
 	}
 	else
 		com1<<"wifi is healthy\n";
+	TaskManager::DelayS(2);
 	wifi.SetEcho(false);//关闭回响
 	wifi.SetMode(esp8266::esp8266_MODE_STATION,esp8266::esp8266_PATTERN_DEF);//设置为station+ap模式
 	wifi.SetMUX(false);//单连接模式
-	//wifi.SetApParam(mApSetName,mApSetPasswd,esp8266::esp8266_PATTERN_DEF);//设置热点信息
+//	//wifi.SetApParam(mApSetName,mApSetPasswd,esp8266::esp8266_PATTERN_DEF);//设置热点信息
 	wifi.JoinAP(mApJoinName,mApJoinPasswd,esp8266::esp8266_PATTERN_DEF);//加入AP
-	
+	TaskManager::DelayS(2);
 	//连接服务器
 	if(!wifi.Connect((char*)"192.168.191.1",8090,Socket_Type_Stream,Socket_Protocol_IPV4))
 	{
@@ -99,7 +99,7 @@ void App::WifiInit()
 	light.Off();
 }
 
-
+//登录服务器
 bool App::SignIn()
 {
 	mToServer.operationType = Protocol::OperationType_Control;
@@ -127,6 +127,13 @@ bool App::SignIn()
 //硬件健康状态检查
 bool App::CheckHardware()
 {
+	//输出调试信息
+	static float time;
+	if(TaskManager::Time()-time>=20)
+	{
+		time = TaskManager::Time();
+		com1<<".";
+	}
 	return true;//wifi.Kick();
 }
 
@@ -147,15 +154,16 @@ bool App::CheckConnectionToServer()
 void App::ReceiveAndDeal()
 {
 	static unsigned short size=0;
+	//连接wifi的串口有没有接收到数据
 	if(com2.ReceiveBufferSize()>5)
 	{
 		//从wifi缓冲区读取数据
 		size = wifi.Read(mDataTemp);
-		if(size>0)
+		if(size>0)//读到数据
 		{
 			void* data;
 			static Protocol::OperationType operationType;
-			//解析服务器发送过来的消息类型
+			//解析服务器发送过来的消息类型，并把数据放到data中
 			short dataType = Decode(&data,&operationType);
 			com1<<"type:"<<dataType<<"\n";
 			if(dataType == Protocol::Switch::dataType)
@@ -214,7 +222,7 @@ void App::ReceiveAndDeal()
 			}
 			else if(dataType == Protocol::Sensor::dataType)
 			{
-				if(operationType == Protocol::OperationType_Ask)//询问开关状态
+				if(operationType == Protocol::OperationType_Ask)//询问传感器状态
 				{
 					SendSensorInfoToServer();
 				}
@@ -248,7 +256,7 @@ void App::ReceiveAndDeal()
 
 
 
-
+//对接收到的数据进行解析
 short App::Decode(void* *data,Protocol::OperationType* operationType)
 {
 	//验证头部
@@ -297,6 +305,7 @@ short App::Decode(void* *data,Protocol::OperationType* operationType)
 }
 
 
+//发送灯光信息到服务器
 bool App::SendLightInfoToServer()
 {
 	mToServer.operationType = Protocol::OperationType_Ack;
@@ -318,6 +327,8 @@ bool App::SendLightInfoToServer()
 	mIsAlive = false;
 	return false;
 }
+
+//发送窗帘状态到服务器
 bool App::SendCurtainInfoToServer(bool isOn)
 {
 	mToServer.operationType = Protocol::OperationType_Ack;
@@ -340,6 +351,7 @@ bool App::SendCurtainInfoToServer(bool isOn)
 	return false;
 }
 
+//发送传感器状态到服务器
 bool App::SendSensorInfoToServer()
 {
 	mToServer.operationType = Protocol::OperationType_Ack;
@@ -360,7 +372,7 @@ bool App::SendSensorInfoToServer()
 	return false;
 }
 
-
+//发送链路保持信号到服务器
 bool App::SendKeepAliveToServer()
 {
 	mToServer.operationType = Protocol::OperationType_Ack;
@@ -377,6 +389,7 @@ bool App::SendKeepAliveToServer()
 	return false;
 }
 
+//发送数据到服务器
 bool App::Write(Protocol::ToServer &toServer)
 {
 	LittleEndianToBigEndian(mDataTemp,toServer.head);//起始标志
@@ -391,6 +404,7 @@ bool App::Write(Protocol::ToServer &toServer)
 	return wifi.Write(mDataTemp,21+toServer.dataLength);
 }
 
+//关闭窗帘
 bool App::CloseCurtain()
 {
 	stepMotor.Run(true,3);
@@ -401,6 +415,7 @@ bool App::CloseCurtain()
 	return true;
 }
 
+//开启窗帘
 bool App::OpenCurtain()
 {
 	stepMotor.Run(false,3);

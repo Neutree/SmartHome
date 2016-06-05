@@ -1,6 +1,7 @@
 package com.neucrack.DAO;
 
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,7 +84,7 @@ public class DAOHelper {
 			}
 			 jsonObject= new JSONObject(result);
 		} catch (JSONException e) {
-			e.printStackTrace();
+			
 			return -1;
 		}
 		try {

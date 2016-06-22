@@ -30,5 +30,8 @@ JLinkSettings.ini
 *.uvoptx
 *.*.bak
 
-
+History
+*.OutJob
+*.LOG
+*.SchDocPreview
 
